@@ -17,4 +17,4 @@ or do it manually
         cd ..
 * Create .env file in main project directory
 
-    npm start
+        npm start
