@@ -7,12 +7,13 @@
 or do it manually
 * Extract project 
 * open terminal in project directory and run following commands
-* npm install
-* cd front
-* npm install
-* cd ..
-* cd hotel247
-* npm install
-* cd ..
+
+        npm install
+        cd front
+        npm install
+        cd ..
+        cd hotel247
+        npm install
+        cd ..
 * Create .env file in main project directory
-* npm start
+    npm start
