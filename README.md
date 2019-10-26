@@ -1,7 +1,9 @@
 ## HOTEL247
 
 ### How to get the project running on your system
-* Download the project using git clone https://github.com/hold7door/Hotel247.git or manually
+* Download the project using 
+    git clone https://github.com/hold7door/Hotel247.git 
+or do it manually
 * Extract project 
 * open terminal in project directory and run following commands
 * npm install
