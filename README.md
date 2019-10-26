@@ -16,4 +16,5 @@ or do it manually
         npm install
         cd ..
 * Create .env file in main project directory
+
     npm start
