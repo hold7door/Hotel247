@@ -39,7 +39,7 @@ class LoginBox extends React.Component{
         this.state = {
             username : null,
             password : null,
-            //redirectTo : null
+            redirectTo : null
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,11 +62,10 @@ class LoginBox extends React.Component{
         }).then((response) => {
             if (response.status === 200){
                 console.log('Received');
-/*                 this.setState({
+                this.setState({
                     redirectTo : '/'
-                }); */
-                //console.log(this.state);
-
+                });
+                this.props.afterLogIn();
             }
         }).catch(err => {
             console.log("login error");
@@ -74,10 +73,8 @@ class LoginBox extends React.Component{
         });
     }
     render(){
-/*         if (this.state.redirectTo){
-            return <Redirect to={{
-                pathname : this.state.redirectTo
-            }} />
+  /*       if (this.state.redirectTo){
+            this.props.afterLogIn();
         }
         else{ */
             return (
@@ -127,13 +124,17 @@ class LoginMain extends React.Component{
             isLoggedIn : false,
             username : null
         };
+        this.onLogin = this.onLogin.bind(this);
+    }
+    onLogin(){
+        this.props.redirectAfterLogin();
     }
     render() {
         return (
             <div className="login-page">
                 <NavBar />
 
-                <LoginBox />
+                <LoginBox afterLogIn={this.onLogin}/>
             </div>
         );
     }

@@ -55,7 +55,8 @@ class App extends React.Component{
                         <Switch>
                         <Route exact path='/' >
                         <Redirect to={{
-                                pathname:"/login"
+                                pathname:"/login",
+                                //state : {from : }
                             }}/>
                         </Route>
                         <Route exact path='/login' component={Login}/>
@@ -70,13 +71,28 @@ class App extends React.Component{
 class Login extends React.Component{
     constructor(props){
         super(props);
+        this.state = {
+            userLoggedIn : false
+        };
+        this.redirectLogin = this.redirectLogin.bind(this);
+    }
+    redirectLogin(){
+        this.setState({
+            userLoggedIn : true
+        });
     }
     render(){
-        return (
-            <div className="login-page-main">
-                <LoginMain />
-            </div>
-        );
+        if (this.state.userLoggedIn){
+            console.log("this was called");
+            return <Dashboard />
+        }
+        else{
+            return (
+                <div className="login-page-main">
+                    <LoginMain redirectAfterLogin={this.redirectLogin}/>
+                </div>
+            );
+        }
     }
 }
 
