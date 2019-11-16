@@ -8,3 +8,5 @@ const signupRequestSchema = mongoose.Schema({
     hotelPin : {type : Number},
     certNumber : {type : String, required : true, max : 100}
 });
+
+module.exports = mongoose.model('SignUpRequest', signupRequestSchema);

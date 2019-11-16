@@ -40,6 +40,7 @@ app.use(passport.session());
 app.use(cors()); // plumbing it in as middleware
 
 const loginRoutes = require('./routes/loginRouter')(router, passport);
+const pendingRequest = require('./controllers/requestApprove')(router);
 
 require('./config/passport')(passport, localStrategy);
 
@@ -53,8 +54,8 @@ app.get('/isAuth', (req, res, next) => {
 });
 
 app.use('/auth', loginRoutes);
-
+app.use('/approve', pendingRequest);
 
 const port = 4500;
 app.listen(port);
-console.log(`Server listening on port ${port}`);
+console.log(`API Server listening on port ${port}`);
