@@ -19,7 +19,7 @@ body{
 	transform: translate(-50%,-50%);
 	color: black;
 }
-.login-box h1{
+.login-box h1 .sign-up-box{
 	float: left;
 	font-size: 40px;
 	border-bottom: 6px solid #4caf50;

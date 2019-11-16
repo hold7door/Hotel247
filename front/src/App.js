@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import LoginMain from './components/loginPage';
-import DashboardMain from './components/dashboard';
+import {LoginMain} from './components/loginPage';
+import {DashboardMain} from './components/dashboard';
+import SignUpMain from './components/signup';
 import axios from 'axios';
 
 class App extends React.Component{
@@ -43,6 +44,11 @@ class App extends React.Component{
                                     pathname:"/"
                                 }}/>
                             </Route>
+                            <Route exact path='/signup'>
+                                <Redirect to={{
+                                    pathname:"/"
+                                }}/>
+                            </Route>
                         </Switch>
                     </div>
                 </Router>
@@ -60,6 +66,7 @@ class App extends React.Component{
                             }}/>
                         </Route>
                         <Route exact path='/login' component={Login}/>
+                        <Route exact path='/signup' component={SignUpPage} />
                         </Switch>
                     </div>
                 </ Router>
@@ -101,6 +108,16 @@ class Dashboard extends React.Component{
         return (
             <div className="dashboard-main">
                 <DashboardMain />
+            </div>
+        );
+    }
+}
+
+class SignUpPage extends React.Component{
+    render(){
+        return (
+            <div className="sign-up-page">
+                <SignUpMain />
             </div>
         );
     }

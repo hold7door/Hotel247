@@ -140,4 +140,7 @@ class LoginMain extends React.Component{
     }
 }
 
-export default LoginMain;
+export {
+    LoginMain,
+    NavBar
+};
