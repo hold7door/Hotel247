@@ -6,7 +6,7 @@ body{
 	background: #8483f0 ;
 	background-size: cover;
 }
-.login-box{
+.login-box {
 	width: 500px;
 	position: absolute;
 	top: 50%;
@@ -19,7 +19,7 @@ body{
 	transform: translate(-50%,-50%);
 	color: black;
 }
-.login-box h1 .sign-up-box{
+.login-box h1 {
 	float: left;
 	font-size: 40px;
 	border-bottom: 6px solid #4caf50;
@@ -32,7 +32,6 @@ body{
 	font-size: 20px;
 	padding: 8px 0;
 	margin: 8px 0;
-	border-bottom
 }
 
 .textbox i{
