@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const Hotel = require('./hotel');
 
 const managerSchema = mongoose.Schema({
-    mangerOfHotel : {type : mongoose.Schema.Types.ObjectId, ref : Hotel, required : true},
+    managerOfHotel : {type : mongoose.Schema.Types.ObjectId, ref : Hotel, required : true},
     userId : {type : String},
     hash : {type : String},
     salt : {type : String}
@@ -11,7 +12,6 @@ const managerSchema = mongoose.Schema({
 managerSchema.methods.setPassword = function(password) {
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-    console.log("set hash to " + this.hash);
 };
 
 managerSchema.methods.validatePassword = function(password) {

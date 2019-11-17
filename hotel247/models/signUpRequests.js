@@ -6,6 +6,7 @@ const signupRequestSchema = mongoose.Schema({
     hotelCity : {type : String, required : true, max : 50},
     hotelState : {type : String, required : true, max : 50},
     hotelPin : {type : Number},
+    email : {type : String},
     certNumber : {type : String, required : true, max : 100}
 });
 
