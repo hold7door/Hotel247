@@ -7,20 +7,20 @@ class NavBar extends React.Component{
         return (
             <div className = "nav-container">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <a className="navbar-brand" href="#">Hotel247</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li className="nav-item active">
-                        <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+                        <a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Link</a>
+                        <a className="nav-link" href="#">About Us</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Mission</a>
                     </li>
                     </ul>
                     <form className="form-inline my-2 my-lg-0">
@@ -99,17 +99,17 @@ class LoginBox extends React.Component{
                         </span>
 
                         <a href="#" className="txt2 hov1">
-                            Username / Password?
+                             Username / Password?
                         </a>
                     </div>
 
                     <div className="text-center">
                         <span className="txt1">
-                            Create an account?
+                             Create an account?
                         </span>
 
-                        <a href="sign-up.html" className="txt2 hov1">
-                            Sign up
+                        <a href="/signup" className="txt2 hov1">
+                             Sign up
                         </a>
                     </div>
                 </div>
