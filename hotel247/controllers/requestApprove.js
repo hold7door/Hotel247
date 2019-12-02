@@ -8,11 +8,13 @@ module.exports = (router) => {
         //Show all Pending Register Requests
         SignUpRequest.find({}, (err, data) => {
             if(err) throw err;
-            res.json(data);
+            //res.json(data);
+            res.render('showAllRequest', {data : data});
         });
     });
 
     router.get('/hotel/:item', (req, res) => {
+        console.log(req.params.item);
         var searchId = mongoose.Types.ObjectId(req.params.item);
         var regItem = SignUpRequest.findById(searchId, (err, searchRes) => {
             if (err) throw err;

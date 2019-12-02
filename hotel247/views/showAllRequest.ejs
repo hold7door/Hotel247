@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>SignUp Requests</title>
+        <script
+			  src="https://code.jquery.com/jquery-1.12.4.js"
+			  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+              crossorigin="anonymous" >
+        </script>
+        <script src="/assets/req-list.js"></script>
+		<link href = "/assets/styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h1>All Requests</h1>
+        <div id="todo-table">
+            <form>
+                <input type="text" name="item" placeholder="Add new item" required />
+                <button type="submit">Approve Id</button>
+                <ul>
+                    <% for (var i=0; i<data.length; i++) { %>
+                        <li><%= data[i] %></li>
+                    <% } %>
+                </ul>
+            </form>
+        </div>
+    </body>
+</html>
