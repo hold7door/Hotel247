@@ -1,9 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import {LoginMain} from './components/loginPage';
-import {DashboardMain} from './components/dashboard';
 import SignUpMain from './components/signup';
 import axios from 'axios';
+
+import { createBrowserHistory } from "history";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "assets/css/paper-dashboard.css";
+import "assets/demo/demo.css";
+import "perfect-scrollbar/css/perfect-scrollbar.css";
+
+import AdminLayout from "layouts/Admin.jsx";
+
+const hist = createBrowserHistory();
 
 class App extends React.Component{
     constructor(props){
@@ -107,7 +117,12 @@ class Dashboard extends React.Component{
     render(){
         return (
             <div className="dashboard-main">
-                <DashboardMain />
+                <Router history={hist}>
+                    <Switch>
+                    <Route path="/admin" render={props => <AdminLayout {...props} />} />
+                    <Redirect to="/admin/dashboard" />
+                    </Switch>
+                </Router>,
             </div>
         );
     }
