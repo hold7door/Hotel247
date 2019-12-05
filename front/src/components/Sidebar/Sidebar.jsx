@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
             </div>
           </a>
           <a
-            href=""
+            href="/"
             className="simple-text logo-normal"
           >
             Hotel 247
