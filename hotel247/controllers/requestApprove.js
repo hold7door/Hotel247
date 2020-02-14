@@ -2,6 +2,7 @@ const SignUpRequest = require('../models/signUpRequests');
 const Hotel = require('../models/hotel');
 const HotelManager = require('../models/hotelManager');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 module.exports = (router) => {
     router.get('/showall', (req, res) => {
@@ -35,9 +36,12 @@ module.exports = (router) => {
                         if (err) throw err;
                     });
                 });
-                newManager.setPassword("somerandomstring", (err) => {
+                randomInitPassword = crypto.randomBytes(4).toString('hex');
+                newManager.setPassword(randomInitPassword, (err, data) => {
                     if (err) throw err;
                 });
+                console.log("Manager created successfully. Credentials sent to user");
+                //Write Email logic
             });
             res.json(searchRes);
         });
