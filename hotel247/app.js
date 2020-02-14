@@ -53,7 +53,7 @@ const forgotPass = require('./controllers/forgotPass')(router);
 require('./config/passport')(passport, localStrategy);
 
 app.get('/isAuth', (req, res, next) => {
-    console.log(req.sessionID);
+    //console.log(req.sessionID);
     if (req.user)
         res.json({ user : req.user });
     else{ 

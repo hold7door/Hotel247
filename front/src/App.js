@@ -20,7 +20,8 @@ class App extends React.Component{
         super(props);
         this.state = {
             isAuthenticated : false,
-            username : null
+            managerId : null,
+            managerOfHotel : null
         };
     }
     componentDidMount(){
@@ -29,15 +30,16 @@ class App extends React.Component{
             url : '/isAuth',
             responseType : 'json'
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             if (response.data.user){
                 console.log('User logged in');
-                this.setState({ isAuthenticated : true, username : response.data.user.username});
+                this.setState({ isAuthenticated : true, managerId : response.data.user._id, managerOfHotel : response.data.user.managerOfHotel});
             }
             else{
                 this.setState({
                     isAuthenticated : false,
-                    username : null
+                    managerId : null,
+                    managerOfHotel : null
                 });
             }
         });
