@@ -25,7 +25,8 @@ class SignUpBox extends React.Component{
         }).then((response) => {
             if (response.status === 200){
                 console.log("Register request sent");
-                console.log(response.data);
+                //console.log(response.data);
+                this.props.redirectSuccessHandler();
             }
         }).catch((err) => {
             console.log(err);
@@ -75,11 +76,18 @@ class SignUpBox extends React.Component{
 }
 
 class SignUpMain extends React.Component{
+    constructor(props){
+        super(props);
+        this.redirectHandler = this.redirectHandler.bind(this);
+    }
+    redirectHandler(){
+        this.props.redirectSuccess();
+    }
     render(){
         return(
             <div className="sign-up-main">
                 <NavBar />
-                <SignUpBox />
+                <SignUpBox redirectSuccessHandler={this.redirectHandler} />
             </div>
         );
     }

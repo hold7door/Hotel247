@@ -48,6 +48,7 @@ app.use(cors()); // plumbing it in as middleware
 const loginRoutes = require('./routes/loginRouter')(router, passport);
 const pendingRequest = require('./controllers/requestApprove')(router);
 const newReq = require('./controllers/newReqUpdate')(router);
+const forgotPass = require('./controllers/forgotPass')(router);
 
 require('./config/passport')(passport, localStrategy);
 
@@ -60,9 +61,15 @@ app.get('/isAuth', (req, res, next) => {
     }
 });
 
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+});
+
 app.use('/auth', loginRoutes);
 app.use('/approve', pendingRequest);
 app.use('/newreq', newReq);
+app.use('/forgot', forgotPass);
 
 const port = 4500;
 app.listen(port);

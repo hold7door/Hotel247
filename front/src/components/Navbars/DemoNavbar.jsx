@@ -170,13 +170,21 @@ class Header extends React.Component {
                   </p>
                 </Link>
               </NavItem>
+              <NavItem>
+                <Link to="#pablo" className="nav-link btn-rotate">
+                  <i className="nc-icon nc-bell-55" />
+                  <p>
+                    <span className="d-lg-none d-md-block">Account</span>
+                  </p>
+                </Link>
+              </NavItem>
               <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen}
                 toggle={e => this.dropdownToggle(e)}
               >
                 <DropdownToggle caret nav>
-                  <i className="nc-icon nc-bell-55" />
+                  <i className="nc-icon nc-settings-gear-65" />
                   <p>
                     <span className="d-lg-none d-md-block">Some Actions</span>
                   </p>
@@ -184,17 +192,9 @@ class Header extends React.Component {
                 <DropdownMenu right>
                   <DropdownItem tag="a">Action</DropdownItem>
                   <DropdownItem tag="a">Another Action</DropdownItem>
-                  <DropdownItem tag="a">Something else here</DropdownItem>
+                  <DropdownItem tag="a">Logout</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <NavItem>
-                <Link to="#pablo" className="nav-link btn-rotate">
-                  <i className="nc-icon nc-settings-gear-65" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Account</span>
-                  </p>
-                </Link>
-              </NavItem>
             </Nav>
           </Collapse>
         </Container>

@@ -100,7 +100,7 @@ class Login extends React.Component{
     }
     render(){
         if (this.state.userLoggedIn){
-            console.log("this was called");
+            //console.log("this was called");
             return <Dashboard />
         }
         else{
@@ -129,12 +129,29 @@ class Dashboard extends React.Component{
 }
 
 class SignUpPage extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            requestSuccess : false
+        };
+        this.redirectAfterRequest = this.redirectAfterRequest.bind(this);
+    }
+    redirectAfterRequest(){
+        this.setState({
+            requestSuccess : true
+        });
+    }
     render(){
-        return (
-            <div className="sign-up-page">
-                <SignUpMain />
-            </div>
-        );
+        if (this.state.requestSuccess){
+            return (<Redirect to = {'/'} />);
+        }
+        else {
+            return (
+                <div className="sign-up-page" >
+                    <SignUpMain redirectSuccess={this.redirectAfterRequest}/>
+                </div>
+            );
+        }
     }
 }
 
