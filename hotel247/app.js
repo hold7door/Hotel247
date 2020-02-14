@@ -1,4 +1,9 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+  throw result.error;
+}
+
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
@@ -9,8 +14,8 @@ const localStrategy = require('passport-local').Strategy;
 const cors = require('cors');
 var Store = require('express-session').Store;
 var MongooseStore = require('mongoose-express-session')(Store);
-var db_user = process.env.DB_USER;
-var db_pass = process.env.DB_PASS;
+const db_user = process.env.DB_USER;
+const db_pass = process.env.DB_PASS;
 mongoose.connect(`mongodb+srv://${db_user}:${db_pass}@cluster0-wfqgi.mongodb.net/test?retryWrites=true&w=majority`, 
     {useNewUrlParser : true, useUnifiedTopology : true}
 );
