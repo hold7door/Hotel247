@@ -8,4 +8,4 @@ const hotelServicesSchema = mongoose.Schema({
     serviceAvail : {type : Boolean}
 });
 
-models.exports = mongoose.model('HotelServices', hotelServicesSchema);
+module.exports = mongoose.model('HotelServices', hotelServicesSchema);

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const Guests = require('guests');
+const Guest = require('./guests');
 
 const BillGuestSchema = mongoose.Schema({
-    ofGuest : {type : mongoose.Schema.Types.ObjectId, ref : Guests, required : true},
-    paid : {type : false, required : true},
-    currentAmount : {type : String, required : true}
+    billOfGuest : {type : mongoose.Schema.Types.ObjectId},
+    paid : {type : Boolean, default : false},
+    currentAmount : {type : Number, dafault : 0}
 });
 
 module.exports = mongoose.model('BillGuest', BillGuestSchema);

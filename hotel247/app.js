@@ -72,7 +72,7 @@ app.use('/approve', pendingRequest);
 app.use('/newreq', newReq);
 app.use('/forgot', forgotPass);
 
-//api endpoint for hotel specific dashboard data
+//api endpoint for hotel specific dashboard data read and write
 app.use('/api', hotelData);
 
 const port = 4500;

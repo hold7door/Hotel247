@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const BillGuest = require('billGuest');
+//const BillGuest = require('billGuest');
 
+//Document created only when guests orders something
 const billSchema = mongoose.Schema({
     billId : {type : mongoose.Schema.Types.ObjectId, ref : BillGuest, required : true},
     menuItemId : {type : mongoose.Schema.Types.ObjectId, ref : HotelMenu, required : true},
@@ -11,4 +12,4 @@ const billSchema = mongoose.Schema({
     menuItemAmount : {type : String}
 });
 
-models.exports = mongoose.model('Bills', billSchema);
+module.exports = mongoose.model('Bills', billSchema);

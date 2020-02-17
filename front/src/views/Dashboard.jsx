@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
         }
       }).then((response) => {
         if (response.status == 200){
-          console.log("Guest updated successfullt");
+          console.log("Guest updated successfully");
         }
       }).catch((err) => {
         console.log("Error sending guest data to server");
