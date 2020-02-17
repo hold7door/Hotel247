@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const BillGuest = require('billGuest');
 
 const billSchema = mongoose.Schema({
-    customerId : {type : mongoose.Schema.Types.ObjectId, ref : Customer, required : true},
+    billId : {type : mongoose.Schema.Types.ObjectId, ref : BillGuest, required : true},
     menuItemId : {type : mongoose.Schema.Types.ObjectId, ref : HotelMenu, required : true},
     serviceItemId : {type : mongoose.Schema.Types.ObjectId, ref : hotelServices, required : true},
     menuItemQuant : {type : Number, required : true},

@@ -49,6 +49,7 @@ const loginRoutes = require('./routes/loginRouter')(router, passport);
 const pendingRequest = require('./controllers/requestApprove')(router);
 const newReq = require('./controllers/newReqUpdate')(router);
 const forgotPass = require('./controllers/forgotPass')(router);
+const hotelData = require('./controllers/hotelData')(router);
 
 require('./config/passport')(passport, localStrategy);
 
@@ -70,6 +71,9 @@ app.use('/auth', loginRoutes);
 app.use('/approve', pendingRequest);
 app.use('/newreq', newReq);
 app.use('/forgot', forgotPass);
+
+//api endpoint for hotel specific dashboard data
+app.use('/api', hotelData);
 
 const port = 4500;
 app.listen(port);

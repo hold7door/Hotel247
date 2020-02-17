@@ -83,12 +83,12 @@ class LoginBox extends React.Component{
                     <form className="login-form">
                         <div className="textbox">
                             <i className="fa fa-user" aria-hidden="true"></i>
-                            <input type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange}/>
+                            <input type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} required/>
                         </div>
 
                         <div className="textbox">
                             <i className="fa fa-lock" aria-hidden="true"></i>
-                            <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+                            <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} req/>
                         </div>
 
                         <button className="btn-sign" type="submit" onClick={this.handleSubmit}>SignIn</button>

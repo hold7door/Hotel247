@@ -69,7 +69,7 @@ class Sidebar extends React.Component {
             href="/"
             className="simple-text logo-normal"
           >
-            Hotel 247
+            {this.props.hotelName != null ? this.props.hotelName : 'Hotel247'}
           </a>
         </div>
         <div className="sidebar-wrapper" ref={this.sidebar}>

@@ -50,7 +50,12 @@ class App extends React.Component{
                 <Router>
                     <div className="App">
                         <Switch>
-                            <Route exact path='/' component={Dashboard}/>
+                            <Route exact path='/' render={
+                                    (props)=> 
+                                <Dashboard {...props} managerId={this.state.managerId} hotelId={this.state.managerOfHotel}
+                                />
+                                }
+                            />
                             <Route exact path='/login'>
                                 <Redirect to={{
                                     pathname:"/"
@@ -116,12 +121,16 @@ class Login extends React.Component{
 }
 
 class Dashboard extends React.Component{
+    constructor(props){
+        super(props);
+    }
     render(){
+        //console.log(this.props);
         return (
             <div className="dashboard-main">
                 <Router history={hist}>
                     <Switch>
-                    <Route path="/admin" render={props => <AdminLayout {...props} />} />
+                    <Route path="/admin" render={props => <AdminLayout {...props} {...this.props}/>} />
                     <Redirect to="/admin/dashboard" />
                     </Switch>
                 </Router>,

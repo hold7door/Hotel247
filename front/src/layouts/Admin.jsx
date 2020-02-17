@@ -27,6 +27,9 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "routes.js";
+import axios from "axios";
+
+
 
 var ps;
 
@@ -35,16 +38,30 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       backgroundColor: "black",
-      activeColor: "info"
+      activeColor: "info",
+      hotelName : null
     };
     this.mainPanel = React.createRef();
   }
   componentDidMount() {
-    console.log({routes});
+    //console.log(this.props);
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.mainPanel.current);
       document.body.classList.toggle("perfect-scrollbar-on");
     }
+    //Get Hotel Name 
+    axios({
+      method : 'get',
+      url : '/api/getHotelName/' + this.props.hotelId,
+      responseType : 'json'
+    }).then((response) => {
+      //console.log(response.data.hotelName);
+      if (response.data.hotelName != null){
+        this.setState({
+          hotelName : response.data.hotelName
+        });
+      }
+    });
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -72,6 +89,7 @@ class Dashboard extends React.Component {
           routes={routes}
           bgColor={this.state.backgroundColor}
           activeColor={this.state.activeColor}
+          hotelName={this.state.hotelName}
         />
         <div className="main-panel" ref={this.mainPanel}>
           <DemoNavbar {...this.props} />
@@ -80,7 +98,7 @@ class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  component={prop.component}
+                  render={props => <prop.component {...props} {...this.props} hotelName={this.state.hotelName}/>}
                   key={key}
                 />
               );
