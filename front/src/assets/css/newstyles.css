@@ -1,0 +1,7 @@
+.chat-inner{
+    height: 400px;
+    overflow: auto;
+    background: #f9f9f9;
+    border-radius : 8px;
+    overflow-y : scroll;
+}

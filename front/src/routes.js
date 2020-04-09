@@ -22,7 +22,7 @@ import Icons from "views/Icons.jsx";
 import menucard from "views/menucard.jsx";
 import TableList from "views/Tables.jsx";
 import UserPage from "views/User.jsx";
-
+import Support from "views/Support.jsx";
 
 var routes = [
   {
@@ -68,7 +68,13 @@ var routes = [
     component: UserPage,
     layout: "/admin"
   },
-  
+  {
+    path: "/support",
+    name : "Guest Support",
+    icon: "nc-icon nc-satisfied",
+    component : Support,
+    layout : "/admin"
+  }
   
   
 ];

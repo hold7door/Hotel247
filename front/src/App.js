@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/css/paper-dashboard.css";
+import "assets/css/newstyles.css";
 import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 

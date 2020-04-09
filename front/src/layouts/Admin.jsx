@@ -98,7 +98,7 @@ class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={props => <prop.component {...props} {...this.props} hotelName={this.state.hotelName}/>}
+                  render={props => <prop.component {...props} {...this.props} hotelName={this.state.hotelName} hotelId={this.props.hotelId}/>}
                   key={key}
                 />
               );
