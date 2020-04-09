@@ -114,4 +114,8 @@ io.on('connection', function(sock){
         var guestRoom = data.hotelId + data.roomNum;
         io.sockets.in(data.hotelId).emit('sendGuestQuery', {message : data.message, guestRoomId : guestRoom, room : data.roomNum});
     });
+    sock.on('managerSendsReply', function(data){
+        console.log("Manager sends reply to " + data.to);
+        io.sockets.in(data.to).emit('receive', {message : data.message});
+    });
 });

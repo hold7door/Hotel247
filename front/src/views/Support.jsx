@@ -21,8 +21,15 @@ class Support extends React.Component{
         this.joinRoom = this.joinRoom.bind(this);
         this.newMsgAdd = this.newMsgAdd.bind(this);
         this.renderNewMsgs = this.renderNewMsgs.bind(this);
+        this.renderMsgTxt = this.renderMsgTxt.bind(this);
+        this.changeSelection = this.changeSelection.bind(this);
+        this.sendReply = this.sendReply.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
         this.state = {
-            newMsgs : new Set()
+            newMsgs : new Map(),
+            selected : false,
+            roomSelected : null,
+            replyValue : ""
         };
     }
     componentDidMount(){
@@ -35,24 +42,74 @@ class Support extends React.Component{
         sock.emit('joinManager', {hotel: hotelId});
     }
     newMsgAdd(data){
-        const newRoom = data.room;
-        const newMsgs = new Set([
+        const newMsgs = new Map([
             ...this.state.newMsgs,
-            newRoom
         ]);
+        if (newMsgs.has(data.room))
+        {   
+            var msg = newMsgs.get(data.room)
+            msg.push(data.message);
+            newMsgs.set(data.room, msg);
+        }
+        else{
+            var arr = new Array();
+            arr.push(data.message);
+            newMsgs.set(data.room, arr);
+        }
         this.setState({newMsgs});
-        //console.log(this.state);
     }
     renderNewMsgs(){
-        const {newMsgs} = this.state;
-        if (!newMsgs) return null;
+        var {newMsgs} = this.state;
+        if (newMsgs.size === 0) return null;
         let result = []
-        newMsgs.forEach(roomNumber => {
+        //console.log(newMsgs);
+        newMsgs.forEach((txtMsg, roomNumber) => {
+            //console.log(roomNumber);
             result.push(
-                <Button color="success" size="lg" block>{roomNumber}</Button>
+                <Button color="success" size="lg" onClick={this.changeSelection} block>{roomNumber}</Button>
             );
         });
         return result;
+    }
+    renderMsgTxt(){
+        var {newMsgs} = this.state;
+        if (!this.state.selected){
+            if (newMsgs.size === 0) return null;
+            else{
+                var k = [...newMsgs.keys()];
+                this.setState({selected : true, roomSelected : k[0]});
+            }    
+        }
+        else{
+            var selectedMsgs = this.state.roomSelected;
+            var allText = [...this.state.newMsgs.get(selectedMsgs)];
+            var textp = [];
+            allText.forEach(txt=>{
+                textp.push(
+                    <p className="msg"><strong>Room {selectedMsgs} : </strong>{txt}</p>
+                );
+            });
+            return textp;
+        }
+    }
+    changeSelection(event){
+        //console.log(event.target);
+        this.setState({selected : true, roomSelected : event.target.innerHTML });
+    }
+    onInputChange(event){
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+    }
+    sendReply(event){
+        //console.log(replyMessage);
+        if (this.state.selected){
+            var replyMessage = this.state.replyValue;
+            var destination = this.props.hotelId + this.state.roomSelected;
+            //console.log("before emit");
+            sock.emit('managerSendsReply', {to: destination, message : replyMessage});
+            this.setState({replyValue : ""});
+        }
     }
     render(){
         return (
@@ -77,14 +134,14 @@ class Support extends React.Component{
                             </CardHeader>
                             <CardBody className="chat-output">
                                 <div className="chat-inner chat-text">
-                                
+                                    {this.renderMsgTxt()}
                                 </div>
                             </CardBody>
                             <CardBody>
                             <div>
                                 <InputGroup>
-                                    <Input />
-                                    <InputGroupAddon addonType="append"><Button color="success" style={{ margin : "0px" }}>Send</Button></InputGroupAddon>
+                                    <Input name="replyValue" value={this.state.replyValue} onChange={this.onInputChange}/>
+                                    <InputGroupAddon addonType="append"><Button color="success" onClick={this.sendReply} style={{ margin : "0px" }}>Send</Button></InputGroupAddon>
                                 </InputGroup>
                             </div>
                             </CardBody>
