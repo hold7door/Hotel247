@@ -111,11 +111,10 @@ io.on('connection', function(sock){
         console.log("Guest joined. Room : " + data.room + " HotelId : " + data.hotelId);
     });
     sock.on('sendToManager', function(data){
-        var guestRoom = data.hotelId + data.roomNum;
-        io.sockets.in(data.hotelId).emit('sendGuestQuery', {message : data.message, guestRoomId : guestRoom, room : data.roomNum});
+        io.sockets.in(data.hotelId).emit('sendGuestQuery', {message : data.message, from  : data.roomNum, room : data.roomNum});
     });
     sock.on('managerSendsReply', function(data){
         console.log("Manager sends reply to " + data.to);
-        io.sockets.in(data.to).emit('receive', {message : data.message});
+        io.sockets.in(data.to).emit('receive', {message : data.message, from : data.from, room : data.room});
     });
 });

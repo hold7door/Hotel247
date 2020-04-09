@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createRef} from "react";
 import {
     Row,
     Col,
@@ -25,6 +25,7 @@ class Support extends React.Component{
         this.changeSelection = this.changeSelection.bind(this);
         this.sendReply = this.sendReply.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
+        this.chatBoxRef = createRef();
         this.state = {
             newMsgs : new Map(),
             selected : false,
@@ -37,6 +38,14 @@ class Support extends React.Component{
         sock.on('sendGuestQuery', (data)=>{
             this.newMsgAdd(data);
         });
+ /*        sock.on('receive', (data)=>{
+            console.log(data);
+            this.newMsgAdd(data);
+        }); */
+        this.chatBoxRef.current.scrollTop = this.chatBoxRef.current.scrollHeight;
+    }
+    componentDidUpdate(){
+        this.chatBoxRef.current.scrollTop = this.chatBoxRef.current.scrollHeight;
     }
     joinRoom(hotelId){
         sock.emit('joinManager', {hotel: hotelId});
@@ -45,15 +54,20 @@ class Support extends React.Component{
         const newMsgs = new Map([
             ...this.state.newMsgs,
         ]);
-        if (newMsgs.has(data.room))
-        {   
-            var msg = newMsgs.get(data.room)
-            msg.push(data.message);
+        if (newMsgs.has(data.room)){   
+            var msg = newMsgs.get(data.room);
+            msg.push({
+                from : data.from,
+                message : data.message
+            });
             newMsgs.set(data.room, msg);
         }
         else{
             var arr = new Array();
-            arr.push(data.message);
+            arr.push({
+                from : data.from,
+                message : data.message
+            });
             newMsgs.set(data.room, arr);
         }
         this.setState({newMsgs});
@@ -81,13 +95,22 @@ class Support extends React.Component{
             }    
         }
         else{
-            var selectedMsgs = this.state.roomSelected;
-            var allText = [...this.state.newMsgs.get(selectedMsgs)];
+            var selected = this.state.roomSelected;
+            var allText = [...this.state.newMsgs.get(selected)];
             var textp = [];
             allText.forEach(txt=>{
-                textp.push(
-                    <p className="msg"><strong>Room {selectedMsgs} : </strong>{txt}</p>
-                );
+                if (txt.from === "Manager"){
+                    textp.push(
+                        (<p className="msg msg-manager"><strong>Manager : </strong>{txt.message}</p>)
+
+                    );
+                }
+                else{
+                    textp.push(
+                        (<p className="msg msg-room"><strong>Room {selected} : </strong>{txt.message}</p>)
+
+                    );
+                }
             });
             return textp;
         }
@@ -107,7 +130,13 @@ class Support extends React.Component{
             var replyMessage = this.state.replyValue;
             var destination = this.props.hotelId + this.state.roomSelected;
             //console.log("before emit");
-            sock.emit('managerSendsReply', {to: destination, message : replyMessage});
+            sock.emit('managerSendsReply', {to: destination, message : replyMessage, room : this.state.roomSelected, from : "Manager"});
+            var data = {
+                room : this.state.roomSelected,
+                from : "Manager",
+                message : replyMessage
+            };
+            this.newMsgAdd(data);
             this.setState({replyValue : ""});
         }
     }
@@ -133,7 +162,7 @@ class Support extends React.Component{
                                 <CardTitle> <p className="text-primary text-dark h4">Guest Messages</p></CardTitle>
                             </CardHeader>
                             <CardBody className="chat-output">
-                                <div className="chat-inner chat-text">
+                                <div className="chat-inner chat-text" ref={this.chatBoxRef}>
                                     {this.renderMsgTxt()}
                                 </div>
                             </CardBody>
