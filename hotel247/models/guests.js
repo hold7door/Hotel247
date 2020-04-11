@@ -14,9 +14,9 @@ const guestSchema = mongoose.Schema({
     address : {type : String, required : true},
     checkInDateTime : {type :Date},
     durationOfStay : {type : String},
-    guestRoomNumber : {type : mongoose.Schema.Types.ObjectId, ref : Room, required : true},
-    ofHotel : {type : mongoose.Schema.Types.ObjectId, ref : Hotel, required : true},
-    billId : {type : mongoose.Schema.Types.ObjectId, ref : BillGuest}
+    guestRoomNumber : {type : mongoose.Schema.Types.ObjectId, ref : 'Room'},
+    ofHotel : {type : mongoose.Schema.Types.ObjectId, ref : 'Hotel'},
+    billId : {type : mongoose.Schema.Types.ObjectId, ref : 'BillGuest'}
 });
 
 module.exports = mongoose.model('Guests', guestSchema);

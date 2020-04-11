@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const Hotel = require('./hotel');
 
 const managerSchema = mongoose.Schema({
-    managerOfHotel : {type : mongoose.Schema.Types.ObjectId, ref : Hotel, required : true},
+    managerOfHotel : {type : mongoose.Schema.Types.ObjectId, ref : 'Hotel', required : true},
     userId : {type : String},
     hash : {type : String},
     salt : {type : String},

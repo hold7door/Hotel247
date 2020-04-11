@@ -15,3 +15,8 @@
 .msg-manager{
     text-align: right;
 }
+.error-ref{
+    color: red;
+ 	visibility: hidden;
+    text-align: center
+}

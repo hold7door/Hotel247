@@ -190,9 +190,7 @@ class Header extends React.Component {
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem tag="a" as='button'>Action</DropdownItem>
-                  <DropdownItem tag="a" as='button'>Another Action</DropdownItem>
-                  <DropdownItem tag="a" as='button'>Logout</DropdownItem>
+                  <DropdownItem as='button'>Logout</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </Nav>

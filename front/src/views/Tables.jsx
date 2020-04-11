@@ -17,7 +17,7 @@
 
 */
 import React from "react";
-
+import axios from "axios";
 // reactstrap components
 import {
   Card,
@@ -26,82 +26,94 @@ import {
   CardTitle,
   Table,
   Row,
-  Col
+  Col,
+  Button
 } from "reactstrap";
 
 class Tables extends React.Component {
+  constructor(props){
+    super(props);
+    this.renderTableData = this.renderTableData.bind(this);
+    this.state = {
+      tableRows : new Array()
+    };
+  }
+
+  componentDidMount(){
+    var forTableData = new Array();
+    axios({
+      method : 'get',
+      url : '/roominfo/bookedRooms/' + this.props.hotelId,
+      responseType : 'json'
+    }).then((response)=>{
+      if (response.status === 200){
+        //console.log(response);
+        response.data.bookedrooms.forEach((entry)=>{
+          forTableData.push({
+            room : entry.guestRoomNumber.roomNumber,
+            suite : entry.guestRoomNumber.suiteType,
+            firstname : entry.guestFirstName,
+            lastname : entry.guestLastName,
+            contact : entry.contactNumber,
+            bookedOn : entry.checkInDateTime,
+            duration : entry.durationOfStay,
+            roomId : entry.guestRoomNumber._id
+          });
+        });
+        this.setState({tableRows : forTableData});
+        //return tableData;
+      }
+    }).catch((err)=>{
+      console.log(err);
+    });
+  }
+  renderTableData(){
+    const {tableRows} = this.state;
+    var tableData = new Array();
+    var rowinfo;
+    for(rowinfo of tableRows){
+      var dt = rowinfo.bookedOn.split('T');
+      var dateTimeBook = dt[0] + " " +  dt[1];
+      tableData.push(
+        <tr>
+          <td>{rowinfo.room}</td>
+          <td>{rowinfo.suite}</td>
+          <td>{rowinfo.firstname}</td>
+          <td>{rowinfo.lastname}</td>
+          <td>{rowinfo.contact}</td>
+          <td>{dateTimeBook}</td>
+          <td className="text-center">{rowinfo.duration} day(s)</td>
+          <td><Button color="info">View</Button></td>
+        </tr>
+      );
+    }
+    return tableData;
+  }
   render() {
     return (
-      <>
         <div className="content">
-          
           <Row >
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Customers Details</CardTitle>
+                  <CardTitle tag="h4">Booked Room Details</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Table responsive>
                     <thead className="text-primary">
                       <tr>
+                        <th>Room</th>
+                        <th>Suite</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Mobile Number</th>
-                        <th className="text-center">Room No.</th>
-                        <th className="text-right">Total Bill</th>
+                        <th>Contact</th>
+                        <th>Booking Date/Time</th>
+                        <th>Duration of Stay</th>
+                        <th>View Details</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Dakota Rice</td>
-                        <td>Niger</td>
-                        <td>84932707898</td>
-                        <td className="text-center"><a href="">101</a></td>
-                        <td className="text-right">$36,738</td>
-                      </tr>
-                      <tr>
-                        <td>Minerva Hooper</td>
-                        <td>Curaçao</td>
-                        <td>84932707898</td>
-                        <td className="text-center">102</td>
-                        <td className="text-right">$23,789</td>
-                      </tr>
-                      <tr>
-                        <td>Sage Rodriguez</td>
-                        <td>Netherlands</td>
-                        <td>84932707898</td>
-                        <td className="text-center">103</td>
-                        <td className="text-right">$56,142</td>
-                      </tr>
-                      <tr>
-                        <td>Philip Chaney</td>
-                        <td>Korea, South</td>
-                        <td>84932707898</td>
-                        <td className="text-center">104</td>
-                        <td className="text-right">$38,735</td>
-                      </tr>
-                      <tr>
-                        <td>Doris Greene</td>
-                        <td>Malawi</td>
-                        <td>84932707898</td>
-                        <td className="text-center">105</td>
-                        <td className="text-right">$63,542</td>
-                      </tr>
-                      <tr>
-                        <td>Mason Porter</td>
-                        <td>Chile</td>
-                        <td>84932707898</td>
-                        <td className="text-center" >106</td>
-                        <td className="text-right">$78,615</td>
-                      </tr>
-                      <tr>
-                        <td>Jon Porter</td>
-                        <td>Portugal</td>
-                        <td>84932707898</td>
-                        <td className="text-center">107</td>
-                        <td className="text-right">$98,615</td>
-                      </tr>
+                      {this.renderTableData()}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -110,7 +122,6 @@ class Tables extends React.Component {
             
           </Row>
         </div>
-      </>
     );
   }
 }

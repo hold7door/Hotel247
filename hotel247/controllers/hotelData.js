@@ -18,7 +18,7 @@ module.exports = (router) => {
     router.post('/updateGuest/:item', (req, res)=>{
         //console.log(req.body);
         var hotelId = mongoose.Types.ObjectId(req.params.item);
-        console.log(hotelId);
+        //console.log(hotelId);
         Room.findOne({ofHotel : hotelId, roomNumber : req.body.roomNumber}, function(err, data){
             if (err) throw err;
             if (data){
@@ -65,20 +65,36 @@ module.exports = (router) => {
                 }
                 else{
                     console.log("Room not available");
+                    res.json({success : false, notavail : true, roomdne : false});
                 }
             }
             else{
                 console.log("Requested room does not exist");
+                res.json({success : false, notavail : false, roomdne : true});
             }
         });
     });
-    router.get('/addRoom/:item', (req, res)=>{
-        var h = mongoose.Types.ObjectId(req.params.item);
-        var newRoom = new Room({
-            ofHotel : h,
-            roomNumber : '456'
+    router.post('/addRoom/:hotel', (req, res)=>{
+        var hotelId = mongoose.Types.ObjectId(req.params.hotel);
+        Room.find({roomNumber : req.body.roomnum}, (err, data)=>{
+            if (err) throw err;
+            if (data.length === 0){
+                var newRoom = new Room({
+                    roomNumber : req.body.roomnum,
+                    ofHotel : hotelId,
+                    suiteType : req.body.suite,
+                    available : true
+                });
+                newRoom.save();
+                Hotel.findById(hotelId, (err, gdata)=>{
+                    gdata.hotelRooms.push(newRoom._id);
+                    gdata.save();
+                });
+            }
+            else{
+                console.log("Room alredy exists");
+            }
         });
-        newRoom.save();
     });
     return router;
 };

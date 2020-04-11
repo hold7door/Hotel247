@@ -68,6 +68,7 @@ const forgotPass = require('./controllers/forgotPass')(router);
 
 //Different endpoints to process Hotel Data
 const hotelData = require('./controllers/hotelData')(router);
+const roomInfo = require('./controllers/roomInfo')(router);
 
 // User log-in session using passport
 require('./config/passport')(passport, localStrategy);
@@ -91,11 +92,13 @@ app.use('/newreq', newReq);
 app.use('/forgot', forgotPass);
 //api endpoint for hotel specific dashboard data read and write
 app.use('/api', hotelData);
+app.use('/roominfo', roomInfo);
 
 const port = 4500;
 var server = app.listen(port);
 console.log(`API Server listening on port ${port}`);
 
+//Socket.io events for Chat
 var io = socket(server);
 io.on('connection', function(sock){
     console.log("Guest/Manager connected");

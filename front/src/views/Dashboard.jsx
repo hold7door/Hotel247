@@ -18,7 +18,7 @@
 */
 import React, { createRef } from "react";
 // react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
+import NotificationAlert from "react-notification-alert";
 // reactstrap components
 import {
   Button,
@@ -62,10 +62,12 @@ class Dashboard extends React.Component {
       durationOfStay : null
     };
     this.idTypeRef = createRef();
+    this.notificationAlert = React.createRef();
     this.dropdownToggle = this.dropdownToggle.bind(this);
     this.changeValue = this.changeValue.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.handleGuestSubmit = this.handleGuestSubmit.bind(this);
+    this.notify = this.notify.bind(this);
   }
   handleGuestSubmit(event){
     //To prevent the default form submit event
@@ -79,6 +81,7 @@ class Dashboard extends React.Component {
       axios({
         method : 'post',
         url : '/api/updateGuest/' + this.props.hotelId,
+        responseType : 'json',
         data : {
           //Please add validation function for each of these fields before sending the data
         firstName : this.state.firstName,
@@ -93,11 +96,24 @@ class Dashboard extends React.Component {
         durationOfStay : this.state.durationOfStay
         }
       }).then((response) => {
-        if (response.status == 200){
-          console.log("Guest updated successfully");
+        if (response.status === 200){
+          var alert = "success";
+          var message = "Guest added successfully to " + this.state.roomNumber;
+          console.log(response);
+          if (response.data.success === false){
+            alert = "danger";
+            if (response.data.roomdne)
+              message = "Room does not exist";
+            else
+              message = "Room Occupied";
+          }
+          this.notify(alert, message);
         }
       }).catch((err) => {
         console.log("Error sending guest data to server");
+        var alert = "danger";
+        var message = "Some Error Occured. Refresh and try again"
+        this.notify(alert, message);
         console.log(err);
       });
     }
@@ -120,11 +136,30 @@ class Dashboard extends React.Component {
       idType : e.currentTarget.getAttribute("dropdownvalue")
     });
   }
+
+  notify(type, alertMessage){
+    var options = {};
+    options = {
+      place: 'tr',
+      message: (
+        <div>
+          <div>
+            {alertMessage}
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7
+    };
+    this.notificationAlert.current.notificationAlert(options);
+  }
   render() {
     //console.log(this.props);
     return (
       <>
         <div className="content">
+        <NotificationAlert ref={this.notificationAlert} />
           <Row>
             <Col lg="6" md="6" sm="6">
               <Card className="card-stats">

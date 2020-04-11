@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom'; 
 
@@ -41,6 +41,7 @@ class LoginBox extends React.Component{
             password : null,
             redirectTo : null
         };
+        this.errRef = createRef();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -69,6 +70,7 @@ class LoginBox extends React.Component{
             }
         }).catch(err => {
             console.log("login error");
+            this.errRef.current.style.visibility = "visible";
             console.log(err);
         });
     }
@@ -90,7 +92,9 @@ class LoginBox extends React.Component{
                             <i className="fa fa-lock" aria-hidden="true"></i>
                             <input type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} req/>
                         </div>
-
+                        <div className="error-ref" >
+                            <span ref={this.errRef}>Incorrect Username/Password</span>
+                        </div>
                         <button className="btn-sign" type="submit" onClick={this.handleSubmit}>SignIn</button>
                     </form>
                     <div className="text-center">
