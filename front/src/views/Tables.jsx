@@ -60,7 +60,6 @@ class Tables extends React.Component {
             lastname : entry.guestLastName,
             contact : entry.contactNumber,
             bookedOn : entry.checkInDateTime,
-            duration : entry.durationOfStay,
             roomId : entry.guestRoomNumber._id
           });
         });
@@ -92,7 +91,6 @@ class Tables extends React.Component {
           <td>{rowinfo.lastname}</td>
           <td>{rowinfo.contact}</td>
           <td>{dateTimeBook}</td>
-          <td className="text-center">{rowinfo.duration} day(s)</td>
           <td><Button color="info" value={rowinfo.roomId} onClick={this.viewProfile}>View</Button></td>
         </tr>
       );
@@ -126,7 +124,6 @@ class Tables extends React.Component {
                             <th>Last Name</th>
                             <th>Contact</th>
                             <th>Booking Date/Time</th>
-                            <th>Duration of Stay</th>
                             <th>View Details</th>
                           </tr>
                         </thead>

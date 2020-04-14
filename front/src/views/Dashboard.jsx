@@ -95,7 +95,6 @@ class Dashboard extends React.Component {
         country : this.state.country,
         address : this.state.address,
         roomNumber : this.state.roomNumber,
-        durationOfStay : this.state.durationOfStay,
         suite : this.state.suite,
         email : this.state.email,
         zipCode : this.state.zipCode
@@ -103,7 +102,7 @@ class Dashboard extends React.Component {
       }).then((response) => {
         if (response.status === 200){
           var alert = "success";
-          var message = "Guest added successfully to " + this.state.roomNumber;
+          var message = "Guest added successfully to Room " + this.state.roomNumber;
           console.log(response);
           if (response.data.success === false){
             alert = "danger";
@@ -356,10 +355,10 @@ class Dashboard extends React.Component {
                     </Row>
                     <Row>
                       <Col className="pr-1" md="6">
-                        <FormGroup>
-                          <label>Duration of Stay</label>
-                          <Input placeholder="Duration of Stay" type="text" name="durationOfStay" value={this.state.durationOfStay} onChange={this.onInputChange} required/>
-                        </FormGroup>
+                          <FormGroup>
+                            <label>Email</label>
+                            <Input placeholder="Email" type="text" name="email" value={this.state.email} onChange={this.onInputChange} required/>
+                          </FormGroup>
                       </Col>
                       <Col className="pl-1" md="6">
                         <FormGroup>
@@ -369,12 +368,6 @@ class Dashboard extends React.Component {
                       </Col>
                     </Row>
                     <Row>
-                    <Col className="pr-1" md="6">
-                        <FormGroup>
-                          <label>Email</label>
-                          <Input placeholder="Email" type="text" name="email" value={this.state.email} onChange={this.onInputChange} required/>
-                        </FormGroup>
-                      </Col>
                     </Row>
                     <Row>
                       <div className="update ml-auto mr-auto">

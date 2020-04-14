@@ -24,7 +24,6 @@ module.exports = (router)=>{
             isAvailable : null,
             RoomNumber : null,
             BookingDateTime : null,
-            DurationOfStay : null,
             GuestId : null,
             FirstName : null,
             LastName : null,
@@ -45,7 +44,6 @@ module.exports = (router)=>{
                 RoomInfo.isAvailable = data.available;
                 RoomInfo.RoomNumber = data.roomNumber;
                 RoomInfo.BookingDateTime = data.bookDateTime;
-                RoomInfo.DurationOfStay = data.bookedUntil;
                 RoomInfo.suite = data.suiteType;
                 if (data.available === false){
                     Guests.findOne({guestRoomNumber : roomReq},(err, gdata)=>{
@@ -83,9 +81,6 @@ module.exports = (router)=>{
                     data.email = fval;
                 else if (fkey === "contact")
                     data.contactNumber = fval;
-                //Duration of Room remains unchange (fix)
-                else if (fkey === "duration")
-                    data.durationOfStay = fval;
                 else if (fkey === "idtype")
                     data.guestIdType = fval;
                 else if (fkey === "idNumber")

@@ -48,7 +48,6 @@ class User extends React.Component {
       roomNum : null, // Cant Update. To Change Room User needs to checkout from current Room first.
       email : null,
       contact : null,
-      duration : null,
       suite : null,   // Can't update
       first : null,   //Can't update
       last : null,    //Can't Update
@@ -86,7 +85,6 @@ class User extends React.Component {
             roomNum : response.data.roomdetails.RoomNumber,
             email : response.data.roomdetails.email,
             contact : response.data.roomdetails.contact,
-            duration : response.data.roomdetails.DurationOfStay,
             suite : response.data.roomdetails.suite,
             first : response.data.roomdetails.FirstName,
             last : response.data.roomdetails.LastName,
@@ -113,7 +111,9 @@ class User extends React.Component {
   }
   handleEdit(){
     if (this.state.updatedFields.size === 0){
-      console.log("Nothing to update");
+      var message = "Nothing to update";
+      var type = "success";
+      this.notify(type, message);
     }
     else{
       var fieldValue = new Map();
@@ -384,7 +384,7 @@ class User extends React.Component {
                       </Col>
                     </Row>
                     <Row>
-                      <Col className="pr-1" md="4">
+                      <Col className="pr-1" md="6">
                           <FormGroup>
                             <label>Contact</label>
                             <Input
@@ -396,19 +396,7 @@ class User extends React.Component {
                             />
                           </FormGroup>
                         </Col>
-                        <Col className="px-1" md="4">
-                          <FormGroup>
-                            <label>Duration Of Stay</label>
-                            <Input
-                              placeholder="Duration"
-                              type="text"
-                              name="duration"
-                              onChange={this.onInputChange}
-                              value={this.state.duration}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col className="pl-1" md="4">
+                        <Col className="pl-1" md="6">
                           <FormGroup>
                             <label>Suite</label>
                             <Input placeholder="Suite" type="text" name="suite" value={this.state.suite} disabled/>

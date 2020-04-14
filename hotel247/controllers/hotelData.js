@@ -35,7 +35,6 @@ module.exports = (router) => {
                         country : req.body.country,
                         address : req.body.address,
                         guestRoomNumber : data.id,
-                        durationOfStay : req.body.durationOfStay,
                         ofHotel : hotelId,
                         checkInDateTime : curDateTime,
                         email : req.body.email,
@@ -54,7 +53,6 @@ module.exports = (router) => {
                                 if(err) throw err;
                                 self.available = false;
                                 self.bookDateTime = curDateTime;
-                                self.bookedUntil = self1.durationOfStay;
                                 self.save((error1, t1)=>{
                                     //console.log(self);
                                     self1.billId = e.id;
@@ -92,10 +90,14 @@ module.exports = (router) => {
                 newRoom.save();
                 Hotel.findById(hotelId, (err, gdata)=>{
                     gdata.hotelRooms.push(newRoom._id);
-                    gdata.save();
+                    gdata.save((er)=>{
+                        if (er) throw er;
+                        res.json({success : true});
+                    });
                 });
             }
             else{
+                res.json({success : false});
                 console.log("Room alredy exists");
             }
         });

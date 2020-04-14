@@ -13,7 +13,6 @@ const guestSchema = mongoose.Schema({
     country : {type : String, required : true},
     address : {type : String, required : true},
     checkInDateTime : {type :Date},
-    durationOfStay : {type : String},
     guestRoomNumber : {type : mongoose.Schema.Types.ObjectId, ref : 'Room'},
     ofHotel : {type : mongoose.Schema.Types.ObjectId, ref : 'Hotel'},
     billId : {type : mongoose.Schema.Types.ObjectId, ref : 'BillGuest'},
