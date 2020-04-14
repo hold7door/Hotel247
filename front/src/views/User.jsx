@@ -17,7 +17,8 @@
 
 */
 import React from "react";
-
+import axios from "axios";
+import NotificationAlert from "react-notification-alert";
 // reactstrap components
 import {
   Button,
@@ -30,14 +31,168 @@ import {
   Form,
   Input,
   Row,
-  Col
+  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
+import { createRef } from "react";
 
 class User extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      dropdownOpen : false,
+      // Form data
+      roomNum : null, // Cant Update. To Change Room User needs to checkout from current Room first.
+      email : null,
+      contact : null,
+      duration : null,
+      suite : null,   // Can't update
+      first : null,   //Can't update
+      last : null,    //Can't Update
+      idtype : null,  
+      idNumber : null,
+      address : null,
+      city : null,
+      country : null,
+      zipCode : null,
+      date : null,
+      time : null,
+      billId : null,
+      guestId : null,
+      // Map of fields that were changed
+      updatedFields : new Set()
+    };
+    this.notificationAlert = createRef();
+    this.dropdownToggle = this.dropdownToggle.bind(this);
+    this.changeValue = this.changeValue.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.notify = this.notify.bind(this);
+  }
+
+  componentDidMount(){
+    axios({
+      method : 'get',
+      url : '/roominfo/getRoomInfo/' + this.props.roomId,
+      responseType : 'json'
+    }).then((response)=>{
+      if (response.status === 200){
+        if (response.data.isroom === true){
+          var dt = response.data.roomdetails.BookingDateTime.split('T');
+          this.setState({
+            roomNum : response.data.roomdetails.RoomNumber,
+            email : response.data.roomdetails.email,
+            contact : response.data.roomdetails.contact,
+            duration : response.data.roomdetails.DurationOfStay,
+            suite : response.data.roomdetails.suite,
+            first : response.data.roomdetails.FirstName,
+            last : response.data.roomdetails.LastName,
+            idtype : response.data.roomdetails.IdType,
+            idNumber : response.data.roomdetails.IdNumber,
+            address : response.data.roomdetails.Address,
+            city : response.data.roomdetails.city,
+            country : response.data.roomdetails.country,
+            zipCode : response.data.roomdetails.zipCode,
+            date : dt[0],
+            time : dt[1],
+            billId : response.data.roomdetails.BillId,
+            guestId : response.data.roomdetails.GuestId
+          });
+        }  
+        else{
+          console.log("Room Error");
+        }
+      }
+    }).catch((err)=>{
+      console.log(err);
+      console.log("Error receiving profile data");
+    });
+  }
+  handleEdit(){
+    if (this.state.updatedFields.size === 0){
+      console.log("Nothing to update");
+    }
+    else{
+      var fieldValue = new Map();
+      var toUpdate = this.state.updatedFields;
+      toUpdate.forEach((field)=>{
+        fieldValue.set(field, this.state[field]);
+      });
+      axios({
+        method : 'post',
+        url : '/roominfo/editInfo/' + this.state.guestId,
+        responseType : 'json',
+        data : {
+          updatedData : [...fieldValue]
+        }
+      }).then((response)=>{
+        if (response.status === 200){
+          if (response.data.success === true){
+            var type = "success";
+            var message = "Guest Details Updated Successfully";
+            this.notify(type, message);
+            var emptyMap = new Map();
+            this.setState({
+              updatedFields : emptyMap
+            });
+          }
+        }
+      }).catch((err)=>{
+        if (err) throw err;
+        var type = "danger";
+        var message = "Some error occurred. Check fields and try again";
+        this.notify(type, message);
+      });
+    }
+  }
+  notify(type, alertMessage){
+    console.log("Notify");
+    var options = {};
+    options = {
+      place: 'tr',
+      message: (
+        <div>
+          <div>
+            {alertMessage}
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "nc-icon nc-bell-55",
+      autoDismiss: 7
+    };
+    this.notificationAlert.current.notificationAlert(options);
+  }
+  dropdownToggle(e){
+    this.setState({
+      dropdownOpen : !this.state.dropdownOpen
+    });
+  }
+  changeValue(e){
+    e.preventDefault();
+    var {updatedFields} = this.state.updatedFields;
+    updatedFields.add('idType');
+    this.setState({
+      idType : e.currentTarget.getAttribute("dropdownvalue"),
+      updatedFields : updatedFields
+    });
+  }
+  onInputChange(e){
+    var {updatedFields} = this.state;
+    var updatedSet = new Set([...updatedFields]);
+    updatedSet.add(e.target.name);
+    this.setState({
+      [e.target.name] : e.target.value,
+      updatedFields : updatedSet 
+    });
+  }
   render() {
     return (
-      <>
         <div className="content">
+        <NotificationAlert ref={this.notificationAlert} />
           <Row>
             <Col md="4">
               <Card className="card-user">
@@ -55,14 +210,15 @@ class User extends React.Component {
                         className="avatar border-gray"
                         src={require("assets/img/mike.jpg")}
                       />
-                      <h5 className="title">Chet Faker</h5>
+                      <h5 className="title">{this.state.first +" " + this.state.last}</h5>
                     </a>
-                    <p className="description">@chetfaker</p>
                   </div>
-                  <p className="description text-center">
-                    "I like the way you work it <br />
-                    No diggity <br />I wanna bag it up"
-                  </p>
+                    <p className="description text-center" style={{ marginLeft : "10%"}}>
+                      Contact : <strong>{this.state.contact}</strong>
+                    </p>
+                    <p className="description text-center" style={{ marginLeft : "10%" }}>
+                      Duration of stay : <strong>{this.state.duration} day(s)</strong>
+                    </p>
                 </CardBody>
                 <CardFooter>
                   <hr />
@@ -70,20 +226,20 @@ class User extends React.Component {
                     <Row>
                       <Col className="ml-auto" lg="3" md="6" xs="6">
                         <h5>
-                          12 <br />
-                          <small>Files</small>
+                          {this.state.date} <br />
+                          <small>Date of Arrival</small>
                         </h5>
                       </Col>
                       <Col className="ml-auto mr-auto" lg="4" md="6" xs="6">
                         <h5>
-                          2GB <br />
-                          <small>Used</small>
+                          {this.state.roomNum} <br />
+                          <small>Room</small>
                         </h5>
                       </Col>
                       <Col className="mr-auto" lg="3">
                         <h5>
-                          24,6$ <br />
-                          <small>Spent</small>
+                          {this.state.time} <br />
+                          <small>Time of Arrival</small>
                         </h5>
                       </Col>
                     </Row>
@@ -197,12 +353,13 @@ class User extends React.Component {
                     <Row>
                       <Col className="pr-1" md="5">
                         <FormGroup>
-                          <label>Company (disabled)</label>
+                          <label>Room Number</label>
                           <Input
-                            defaultValue="Creative Code Inc."
-                            disabled
-                            placeholder="Company"
+                            placeholder="Room Number"
                             type="text"
+                            value={this.state.roomNum}
+                            name = "roomNum"
+                            disabled
                           />
                         </FormGroup>
                       </Col>
@@ -210,29 +367,64 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Username</label>
                           <Input
-                            defaultValue="michael23"
                             placeholder="Username"
                             type="text"
+                            name="username"
+                            disabled
                           />
                         </FormGroup>
                       </Col>
                       <Col className="pl-1" md="4">
                         <FormGroup>
                           <label htmlFor="exampleInputEmail1">
-                            Email address
+                            Email Address
                           </label>
-                          <Input placeholder="Email" type="email" />
+                          <Input placeholder="Email" type="email" name ="email" onChange={this.onInputChange} value={this.state.email}/>
                         </FormGroup>
                       </Col>
+                    </Row>
+                    <Row>
+                      <Col className="pr-1" md="4">
+                          <FormGroup>
+                            <label>Contact</label>
+                            <Input
+                              placeholder="Contact"
+                              type="text"
+                              name="contact"
+                              onChange={this.onInputChange}
+                              value={this.state.contact}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col className="px-1" md="4">
+                          <FormGroup>
+                            <label>Duration Of Stay</label>
+                            <Input
+                              placeholder="Duration"
+                              type="text"
+                              name="duration"
+                              onChange={this.onInputChange}
+                              value={this.state.duration}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col className="pl-1" md="4">
+                          <FormGroup>
+                            <label>Suite</label>
+                            <Input placeholder="Suite" type="text" name="suite" value={this.state.suite} disabled/>
+                          </FormGroup>
+                        </Col>
                     </Row>
                     <Row>
                       <Col className="pr-1" md="6">
                         <FormGroup>
                           <label>First Name</label>
                           <Input
-                            defaultValue="Chet"
-                            placeholder="Company"
+                            placeholder="First Name"
                             type="text"
+                            name="first"
+                            value={this.state.first}
+                            disabled
                           />
                         </FormGroup>
                       </Col>
@@ -240,10 +432,40 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Last Name</label>
                           <Input
-                            defaultValue="Faker"
                             placeholder="Last Name"
                             type="text"
+                            name="last"
+                            value={this.state.last}
+                            disabled
                           />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="pr-1" md="6">
+                        <FormGroup >
+                          <label>ID Type</label>
+                          <Dropdown
+                            isOpen={this.state.dropdownOpen}
+                            toggle={e => this.dropdownToggle(e)}
+                            direction="right"
+                          >
+                            <DropdownToggle caret color="white">
+                              {this.state.idtype}
+                            </DropdownToggle>
+                            <DropdownMenu >
+                              <DropdownItem onClick={this.changeValue} dropdownvalue="type 1">type 1</DropdownItem>
+                              <DropdownItem onClick={this.changeValue} dropdownvalue="type 2">type 2</DropdownItem>
+                              <DropdownItem onClick={this.changeValue} dropdownvalue="type 3">type 3</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                          <span id="idInvalid" style={{color:"red", visibility:"hidden"}}>Please select an ID Type</span>
+                        </FormGroup>
+                      </Col>
+                      <Col className="pl-1" md="6">
+                        <FormGroup>
+                          <label>ID Number</label>
+                          <Input placeholder="ID Number" type="text" name="idNumber" onChange={this.onInputChange} value={this.state.idNumber} required/>
                         </FormGroup>
                       </Col>
                     </Row>
@@ -252,9 +474,11 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Address</label>
                           <Input
-                            defaultValue="Melbourne, Australia"
                             placeholder="Home Address"
                             type="text"
+                            name="address"
+                            onChange={this.onInputChange}
+                            value={this.state.address}
                           />
                         </FormGroup>
                       </Col>
@@ -264,9 +488,11 @@ class User extends React.Component {
                         <FormGroup>
                           <label>City</label>
                           <Input
-                            defaultValue="Melbourne"
                             placeholder="City"
                             type="text"
+                            name="city"
+                            onChange={this.onInputChange}
+                            value={this.state.city}
                           />
                         </FormGroup>
                       </Col>
@@ -274,27 +500,18 @@ class User extends React.Component {
                         <FormGroup>
                           <label>Country</label>
                           <Input
-                            defaultValue="Australia"
                             placeholder="Country"
                             type="text"
+                            name="country"
+                            onChange={this.onInputChange}
+                            value={this.state.country}
                           />
                         </FormGroup>
                       </Col>
                       <Col className="pl-1" md="4">
                         <FormGroup>
                           <label>Postal Code</label>
-                          <Input placeholder="ZIP Code" type="number" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label>About Me</label>
-                          <Input
-                            type="textarea"
-                            defaultValue="Oh so, your weak rhyme You doubt I'll bother, reading into it"
-                          />
+                          <Input placeholder="ZIP Code" type="text" name="zipCode" onChange={this.onInputChange} value={this.state.zipCode} />
                         </FormGroup>
                       </Col>
                     </Row>
@@ -303,7 +520,7 @@ class User extends React.Component {
                         <Button
                           className="btn-round"
                           color="primary"
-                          type="submit"
+                          onClick={this.handleEdit}
                         >
                           Update Profile
                         </Button>
@@ -315,7 +532,6 @@ class User extends React.Component {
             </Col>
           </Row>
         </div>
-      </>
     );
   }
 }

@@ -59,7 +59,9 @@ class Dashboard extends React.Component {
       address : null,
       roomNumber : null,
       suite : null,
-      durationOfStay : null
+      durationOfStay : null,
+      zipCode : null,
+      email : null,
     };
     this.idTypeRef = createRef();
     this.notificationAlert = React.createRef();
@@ -93,7 +95,10 @@ class Dashboard extends React.Component {
         country : this.state.country,
         address : this.state.address,
         roomNumber : this.state.roomNumber,
-        durationOfStay : this.state.durationOfStay
+        durationOfStay : this.state.durationOfStay,
+        suite : this.state.suite,
+        email : this.state.email,
+        zipCode : this.state.zipCode
         }
       }).then((response) => {
         if (response.status === 200){
@@ -157,7 +162,6 @@ class Dashboard extends React.Component {
   render() {
     //console.log(this.props);
     return (
-      <>
         <div className="content">
         <NotificationAlert ref={this.notificationAlert} />
           <Row>
@@ -331,16 +335,16 @@ class Dashboard extends React.Component {
                       </Col>
                       <Col className="pl-1" md="6">
                         <FormGroup>
-                          <label>Address</label>
-                          <Input placeholder="Address" type="text" name="address" value={this.state.address} onChange={this.onInputChange} required/>
+                          <label>Postal Code</label>
+                          <Input placeholder="Zip Code" type="text" name="zipCode" value={this.state.zipCode} onChange={this.onInputChange} required/>
                         </FormGroup>
                       </Col>
                     </Row>
                     <Row>
                       <Col className="pr-1" md="6">
                         <FormGroup>
-                          <label>Room Number</label>
-                          <Input placeholder="Room Number" type="text" name="roomNumber" value={this.state.roomNumber} onChange={this.onInputChange} required/>
+                          <label>Address</label>
+                          <Input placeholder="Address" type="text" name="address" value={this.state.address} onChange={this.onInputChange} required/>
                         </FormGroup>
                       </Col>
                       <Col className="pl-1" md="6">
@@ -355,6 +359,20 @@ class Dashboard extends React.Component {
                         <FormGroup>
                           <label>Duration of Stay</label>
                           <Input placeholder="Duration of Stay" type="text" name="durationOfStay" value={this.state.durationOfStay} onChange={this.onInputChange} required/>
+                        </FormGroup>
+                      </Col>
+                      <Col className="pl-1" md="6">
+                        <FormGroup>
+                          <label>Room Number</label>
+                          <Input placeholder="Room Number" type="text" name="roomNumber" value={this.state.roomNumber} onChange={this.onInputChange} required/>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                    <Col className="pr-1" md="6">
+                        <FormGroup>
+                          <label>Email</label>
+                          <Input placeholder="Email" type="text" name="email" value={this.state.email} onChange={this.onInputChange} required/>
                         </FormGroup>
                       </Col>
                     </Row>
@@ -375,7 +393,6 @@ class Dashboard extends React.Component {
             </Col>
           </Row>
         </div>
-      </>
     );
   }
 }

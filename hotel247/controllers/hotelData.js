@@ -15,6 +15,7 @@ module.exports = (router) => {
             }
         });
     });
+    //Add new Guest
     router.post('/updateGuest/:item', (req, res)=>{
         //console.log(req.body);
         var hotelId = mongoose.Types.ObjectId(req.params.item);
@@ -36,7 +37,10 @@ module.exports = (router) => {
                         guestRoomNumber : data.id,
                         durationOfStay : req.body.durationOfStay,
                         ofHotel : hotelId,
-                        checkInDateTime : curDateTime
+                        checkInDateTime : curDateTime,
+                        email : req.body.email,
+                        zipCode : req.body.zipCode,
+                        suite : data.suiteType
                     }); 
                     var self = data;
                     newGuest.save(function(err, d){

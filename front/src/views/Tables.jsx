@@ -18,6 +18,7 @@
 */
 import React from "react";
 import axios from "axios";
+import User from "./User.jsx";
 // reactstrap components
 import {
   Card,
@@ -33,10 +34,13 @@ import {
 class Tables extends React.Component {
   constructor(props){
     super(props);
-    this.renderTableData = this.renderTableData.bind(this);
     this.state = {
-      tableRows : new Array()
+      tableRows : new Array(),
+      viewRoomDetails : false,
+      roomDetailId : null
     };
+    this.renderTableData = this.renderTableData.bind(this);
+    this.viewProfile = this.viewProfile.bind(this);
   }
 
   componentDidMount(){
@@ -67,6 +71,12 @@ class Tables extends React.Component {
       console.log(err);
     });
   }
+  viewProfile(e){
+    this.setState({
+      viewRoomDetails : true,
+      roomDetailId : e.target.value
+    });
+  }
   renderTableData(){
     const {tableRows} = this.state;
     var tableData = new Array();
@@ -83,46 +93,55 @@ class Tables extends React.Component {
           <td>{rowinfo.contact}</td>
           <td>{dateTimeBook}</td>
           <td className="text-center">{rowinfo.duration} day(s)</td>
-          <td><Button color="info">View</Button></td>
+          <td><Button color="info" value={rowinfo.roomId} onClick={this.viewProfile}>View</Button></td>
         </tr>
       );
     }
     return tableData;
   }
   render() {
-    return (
+      if (this.state.viewRoomDetails === true){
+        return (
         <div className="content">
-          <Row >
-            <Col md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Booked Room Details</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <Table responsive>
-                    <thead className="text-primary">
-                      <tr>
-                        <th>Room</th>
-                        <th>Suite</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Contact</th>
-                        <th>Booking Date/Time</th>
-                        <th>Duration of Stay</th>
-                        <th>View Details</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.renderTableData()}
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-            
-          </Row>
+          <User roomId={this.state.roomDetailId}/>
         </div>
-    );
+        );
+      }
+      else{
+        return (
+            <div className="content">
+              <Row >
+                <Col md="12">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle tag="h4">Booked Room Details</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <Table responsive>
+                        <thead className="text-primary">
+                          <tr>
+                            <th>Room</th>
+                            <th>Suite</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Contact</th>
+                            <th>Booking Date/Time</th>
+                            <th>Duration of Stay</th>
+                            <th>View Details</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.renderTableData()}
+                        </tbody>
+                      </Table>
+                    </CardBody>
+                  </Card>
+                </Col>
+                
+              </Row>
+            </div>
+        );
+     }
   }
 }
 

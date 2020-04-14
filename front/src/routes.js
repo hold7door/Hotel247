@@ -61,13 +61,14 @@ var routes = [
     component: Notifications,
     layout: "/admin"
   },
+  /*
   {
-    path: "/user-page",
-    name: "User Profile",
+    path: "/guest-page",
+    name: "Guest Profile",
     icon: "nc-icon nc-single-02",
     component: UserPage,
     layout: "/admin"
-  },
+  },*/
   {
     path: "/support",
     name : "Guest Support",
