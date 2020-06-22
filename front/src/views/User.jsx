@@ -95,7 +95,7 @@ class User extends React.Component {
             country : response.data.roomdetails.country,
             zipCode : response.data.roomdetails.zipCode,
             date : dt[0],
-            time : dt[1],
+            time : dt[1].slice(0, -5),
             billId : response.data.roomdetails.BillId,
             guestId : response.data.roomdetails.GuestId
           });
@@ -225,10 +225,10 @@ class User extends React.Component {
                   <div className="button-container">
                     <Row>
                       <Col className="ml-auto" lg="3" md="6" xs="6">
-                        <h5>
+                        <h6>
                           {this.state.date} <br />
                           <small>Date of Arrival</small>
-                        </h5>
+                        </h6>
                       </Col>
                       <Col className="ml-auto mr-auto" lg="4" md="6" xs="6">
                         <h5>
@@ -237,10 +237,10 @@ class User extends React.Component {
                         </h5>
                       </Col>
                       <Col className="mr-auto" lg="3">
-                        <h5>
+                        <h6>
                           {this.state.time} <br />
                           <small>Time of Arrival</small>
-                        </h5>
+                        </h6>
                       </Col>
                     </Row>
                   </div>

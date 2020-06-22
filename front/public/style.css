@@ -6,8 +6,11 @@ body{
 	background: #8483f0 ;
 	background-size: cover;
 }
+.sign-up-box{
+	margin: 100px;
+}
 .login-box {
-	width: 500px;
+	width: 30%;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -31,13 +34,14 @@ body{
 	overflow: hidden;
 	font-size: 20px;
 	padding: 8px 0;
-	margin: 8px 0;
+	margin: 15px 0;
 }
 
 .textbox i{
 	width: 26px;
 	float: left;
 	text-align: center;
+	margin: 15px
 }
 
 .textbox input{
@@ -57,7 +61,7 @@ body{
 }
 .btn-sign{
 	width: 100%;
-	background: none;
+	background: #22a341;
 	border: 2px solid #4caf50;
 	color: black;
 	padding: 5px;

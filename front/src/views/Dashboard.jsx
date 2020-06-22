@@ -144,7 +144,7 @@ class Dashboard extends React.Component {
   notify(type, alertMessage){
     var options = {};
     options = {
-      place: 'tr',
+      place: 'tc',
       message: (
         <div>
           <div>

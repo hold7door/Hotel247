@@ -59,7 +59,7 @@ class Tables extends React.Component {
             firstname : entry.guestFirstName,
             lastname : entry.guestLastName,
             contact : entry.contactNumber,
-            bookedOn : entry.checkInDateTime,
+            bookedOn : entry.checkInDateTime.slice(0, -5),
             roomId : entry.guestRoomNumber._id
           });
         });

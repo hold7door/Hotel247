@@ -4,18 +4,16 @@ const Guests = require('../models/guests');
 const Hotel = require('../models/hotel');
 
 module.exports = (router)=>{
-    router.get('/allRooms/:hotel', (req, res)=>{
-        var hotelId = mongoose.Types.ObjectId(req.params.hotel);
-        Room.find({ofHotel : hotelId}, (err, data)=>{
-            if (err) throw err;
-            if (data){
-                res.json({found : true, allRoom : data});
-            }   
-            else{
-                console.log("Hotel DNE or rooms not added to hotel");
-                res.json({found : false});
-            } 
-        });
+    // Return all rooms of hotel
+    router.get('/allRooms/:hotel', async (req, res)=>{
+        try{
+            var hotelId = mongoose.Types.ObjectId(req.params.hotel);
+            let data = await Room.find({ofHotel : hotelId});
+            res.json({success : true, allRoom : data});
+        }catch(err){
+            console.log(err);
+            res.json({success : false});
+        }
     });
 
     router.get('/getRoomInfo/:room', (req, res)=>{

@@ -69,6 +69,7 @@ const forgotPass = require('./controllers/forgotPass')(router);
 //Different endpoints to process Hotel Data
 const hotelData = require('./controllers/hotelData')(router);
 const roomInfo = require('./controllers/roomInfo')(router);
+const serviceOp = require('./controllers/serviceOp')(router);
 
 // User log-in session using passport
 require('./config/passport')(passport, localStrategy);
@@ -82,7 +83,7 @@ app.get('/isAuth', (req, res, next) => {
 });
 app.get('/logout', function(req, res){
     req.logout();
-    res.redirect('/');
+    res.json({loggedOut : true});
 });
 
 //All endpoints 
@@ -93,6 +94,7 @@ app.use('/forgot', forgotPass);
 //api endpoint for hotel specific dashboard data read and write
 app.use('/api', hotelData);
 app.use('/roominfo', roomInfo);
+app.use('/service', serviceOp);
 
 const port = 4500;
 var server = app.listen(port);

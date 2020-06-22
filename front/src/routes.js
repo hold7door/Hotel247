@@ -23,6 +23,9 @@ import menucard from "views/menucard.jsx";
 import TableList from "views/Tables.jsx";
 import UserPage from "views/User.jsx";
 import Support from "views/Support.jsx";
+import Services from "views/Services.jsx";
+import ViewServices from "views/ViewServices";
+import Rooms from 'views/Rooms';
 
 var routes = [
   {
@@ -40,11 +43,25 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/menucard",
-    name: "Menu Card",
-    icon: "nc-icon nc-caps-small",
-    component: menucard,
+    path: "/rooms",
+    name: "All Rooms",
+    icon: "nc-icon nc-tile-56",
+    component: Rooms,
     layout: "/admin"
+  },
+  {
+    path : "/editservices",
+    name : "Add Services",
+    icon: "nc-icon nc-diamond",
+    component : Services,
+    layout : "/admin"
+  },
+  {
+    path : "/viewservices",
+    name : "View Services",
+    icon: "nc-icon nc-cart-simple",
+    component : ViewServices,
+    layout : "/admin"
   },
   {
     path: "/icons",
@@ -76,7 +93,6 @@ var routes = [
     component : Support,
     layout : "/admin"
   }
-  
   
 ];
 export default routes;

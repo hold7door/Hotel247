@@ -19,16 +19,15 @@
 import React from "react";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
-import { Route, Switch } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
+
 import routes from "routes.js";
 import axios from "axios";
-
 
 
 var ps;
@@ -39,7 +38,7 @@ class Dashboard extends React.Component {
     this.state = {
       backgroundColor: "black",
       activeColor: "info",
-      hotelName : null
+      hotelName : null,
     };
     this.mainPanel = React.createRef();
   }
@@ -58,7 +57,8 @@ class Dashboard extends React.Component {
       //console.log(response.data.hotelName);
       if (response.data.hotelName != null){
         this.setState({
-          hotelName : response.data.hotelName
+          hotelName : response.data.hotelName,
+          loggedOut : false
         });
       }
     });
@@ -82,38 +82,38 @@ class Dashboard extends React.Component {
     this.setState({ backgroundColor: color });
   };
   render() {
-    return (
-      <div className="wrapper">
-        <Sidebar
-          {...this.props}
-          routes={routes}
-          bgColor={this.state.backgroundColor}
-          activeColor={this.state.activeColor}
-          hotelName={this.state.hotelName}
-        />
-        <div className="main-panel" ref={this.mainPanel}>
-          <DemoNavbar {...this.props} />
-          <Switch>
-            {routes.map((prop, key) => {
-              return (
-                <Route
-                  path={prop.layout + prop.path}
-                  render={props => <prop.component {...props} {...this.props} hotelName={this.state.hotelName} hotelId={this.props.hotelId}/>}
-                  key={key}
-                />
-              );
-            })}
-          </Switch>
-          <Footer fluid />
+      return (
+        <div className="wrapper">
+          <Sidebar
+            {...this.props}
+            routes={routes}
+            bgColor={this.state.backgroundColor}
+            activeColor={this.state.activeColor}
+            hotelName={this.state.hotelName}
+          />
+          <div className="main-panel" ref={this.mainPanel}>
+            <DemoNavbar {...this.props} />
+            <Switch>
+              {routes.map((prop, key) => {
+                return (
+                  <Route
+                    path={prop.layout + prop.path}
+                    render={props => <prop.component {...props} {...this.props} hotelName={this.state.hotelName} hotelId={this.props.hotelId}/>}
+                    key={key}
+                  />
+                );
+              })}
+            </Switch>
+            <Footer fluid />
+          </div>
+          <FixedPlugin
+            bgColor={this.state.backgroundColor}
+            activeColor={this.state.activeColor}
+            handleActiveClick={this.handleActiveClick}
+            handleBgClick={this.handleBgClick}
+          />
         </div>
-        <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          activeColor={this.state.activeColor}
-          handleActiveClick={this.handleActiveClick}
-          handleBgClick={this.handleBgClick}
-        />
-      </div>
-    );
+      );
   }
 }
 

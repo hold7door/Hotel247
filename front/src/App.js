@@ -14,7 +14,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 
-const hist = createBrowserHistory();
+const history = createBrowserHistory();
 
 class App extends React.Component{
     constructor(props){
@@ -24,6 +24,7 @@ class App extends React.Component{
             managerId : null,
             managerOfHotel : null
         };
+        this.deauthenticate = this.deauthenticate.bind(this);
     }
     componentDidMount(){
         axios({
@@ -45,6 +46,13 @@ class App extends React.Component{
             }
         });
     }
+    deauthenticate(){
+        this.setState({
+            isAuthenticated : false,
+            managerId : null,
+            managerOfHotel : null
+        });
+    }
     render(){
         if (this.state.isAuthenticated){
             return (
@@ -53,7 +61,7 @@ class App extends React.Component{
                         <Switch>
                             <Route exact path='/' render={
                                     (props)=> 
-                                <Dashboard {...props} managerId={this.state.managerId} hotelId={this.state.managerOfHotel}
+                                <Dashboard {...props} logoutDeauthenticate={this.deauthenticate} managerId={this.state.managerId} hotelId={this.state.managerOfHotel}
                                 />
                                 }
                             />
@@ -124,14 +132,18 @@ class Login extends React.Component{
 class Dashboard extends React.Component{
     constructor(props){
         super(props);
+        this.logoutRedirect = this.logoutRedirect.bind(this);
+    }
+    logoutRedirect(){
+        this.props.logoutDeauthenticate();
     }
     render(){
         //console.log(this.props);
         return (
             <div className="dashboard-main">
-                <Router history={hist}>
+                <Router history={history}>
                     <Switch>
-                    <Route path="/admin" render={props => <AdminLayout {...props} {...this.props}/>} />
+                    <Route path="/admin" render={props => <AdminLayout {...props} {...this.props} logoutRedirectFunction={this.logoutRedirect}/>} />
                     <Redirect to="/admin/dashboard" />
                     </Switch>
                 </Router>,
