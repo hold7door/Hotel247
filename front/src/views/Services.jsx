@@ -283,7 +283,7 @@ class Services extends React.Component{
 			        <Row>
 			        	<Col md="4">
 			        		<div Style="padding:10px">
-			        		 	<Input type="text" name="CategoryText" placeholder="Enter Text Here" value={this.state.CategoryText} onChange={this.onInputChange}/>
+			        		 	<Input type="text" name="CategoryText" placeholder="Enter Category Name" value={this.state.CategoryText} onChange={this.onInputChange}/>
 			        		</div>
 			        	</Col>
 			        	<Col>
@@ -297,7 +297,7 @@ class Services extends React.Component{
 			        <Row>
 			        	<Col md="4">
 			        		<div Style="padding:10px">
-			        			<Input type="text" name="subCategoryText" placeholder="Enter Text Here" value={this.state.subCategoryText} onChange={this.onInputChange}/>
+			        			<Input type="text" name="subCategoryText" placeholder="Enter Sub Category Name" value={this.state.subCategoryText} onChange={this.onInputChange}/>
 			        		</div>
 			        	</Col>
 			        	<Col md="6">

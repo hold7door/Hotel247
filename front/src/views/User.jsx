@@ -61,6 +61,7 @@ class User extends React.Component {
       time : null,
       billId : null,
       guestId : null,
+      duration : 2,
       // Map of fields that were changed
       updatedFields : new Set()
     };
@@ -248,7 +249,7 @@ class User extends React.Component {
               </Card>
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Team Members</CardTitle>
+                  <CardTitle tag="h4">Members</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <ul className="list-unstyled team-members">
@@ -265,8 +266,8 @@ class User extends React.Component {
                         </Col>
                         <Col md="7" xs="7">
                           DJ Khaled <br />
-                          <span className="text-muted">
-                            <small>Offline</small>
+                          <span className="text-success">
+                            <small>Available</small>
                           </span>
                         </Col>
                         <Col className="text-right" md="3" xs="3">
@@ -323,8 +324,8 @@ class User extends React.Component {
                         </Col>
                         <Col className="col-ms-7" xs="7">
                           Flume <br />
-                          <span className="text-danger">
-                            <small>Busy</small>
+                          <span className="text-success"> 
+                            <small>Available</small>
                           </span>
                         </Col>
                         <Col className="text-right" md="3" xs="3">

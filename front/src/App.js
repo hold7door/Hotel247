@@ -22,11 +22,17 @@ class App extends React.Component{
         this.state = {
             isAuthenticated : false,
             managerId : null,
-            managerOfHotel : null
+            managerOfHotel : null,
+            userLoggedIn : false
         };
+        this.redirectLogin = this.redirectLogin.bind(this);
         this.deauthenticate = this.deauthenticate.bind(this);
+        this.checkAuth = this.checkAuth.bind(this);   
     }
     componentDidMount(){
+        this.checkAuth();
+    }
+    checkAuth(){
         axios({
             method : 'get',
             url : '/isAuth',
@@ -35,16 +41,25 @@ class App extends React.Component{
             //console.log(response);
             if (response.data.user){
                 console.log('User logged in');
-                this.setState({ isAuthenticated : true, managerId : response.data.user._id, managerOfHotel : response.data.user.managerOfHotel});
+                this.setState({ 
+                    isAuthenticated : true, 
+                    managerId : response.data.user._id, 
+                    managerOfHotel : response.data.user.managerOfHotel, 
+                    userLoggedIn : true
+                });
             }
             else{
                 this.setState({
                     isAuthenticated : false,
                     managerId : null,
-                    managerOfHotel : null
+                    managerOfHotel : null,
+                    userLoggedIn : false
                 });
             }
         });
+    }
+    redirectLogin(){
+        this.checkAuth();
     }
     deauthenticate(){
         this.setState({
@@ -75,6 +90,12 @@ class App extends React.Component{
                                     pathname:"/"
                                 }}/>
                             </Route>
+                            <Route path='/admin' render={
+                                (props)=> 
+                                <Dashboard {...props} logoutDeauthenticate={this.deauthenticate} managerId={this.state.managerId} hotelId={this.state.managerOfHotel}
+                                />
+                                }
+                            />
                         </Switch>
                     </div>
                 </Router>
@@ -91,8 +112,16 @@ class App extends React.Component{
                                 //state : {from : }
                             }}/>
                         </Route>
-                        <Route exact path='/login' component={Login}/>
+                        <Route exact path='/login' render={
+                                (props)=> 
+                                <Login {...props} redirectLogin={this.redirectLogin}/>
+                        }/>
                         <Route exact path='/signup' component={SignUpPage} />
+                        <Route path='/admin'>
+                                <Redirect to={{
+                                    pathname:"/"
+                                }}/>
+                            </Route>
                         </Switch>
                     </div>
                 </ Router>
@@ -103,29 +132,14 @@ class App extends React.Component{
 
 class Login extends React.Component{
     constructor(props){
-        super(props);
-        this.state = {
-            userLoggedIn : false
-        };
-        this.redirectLogin = this.redirectLogin.bind(this);
-    }
-    redirectLogin(){
-        this.setState({
-            userLoggedIn : true
-        });
+        super(props);  
     }
     render(){
-        if (this.state.userLoggedIn){
-            //console.log("this was called");
-            return <Dashboard />
-        }
-        else{
-            return (
-                <div className="login-page-main">
-                    <LoginMain redirectAfterLogin={this.redirectLogin}/>
-                </div>
-            );
-        }
+        return (
+            <div className="login-page-main">
+                <LoginMain redirectAfterLogin={this.props.redirectLogin}/>
+            </div>
+        );
     }
 }
 

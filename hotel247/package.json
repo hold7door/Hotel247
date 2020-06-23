@@ -13,12 +13,12 @@
     "connect-mongodb": "^1.1.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "ejs": "^2.7.1",
+    "ejs": "^2.7.4",
     "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "mongoose": "^5.7.4",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.9.20",
     "mongoose-express-session": "0.0.5",
-    "passport": "^0.4.0",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "socket.io": "^2.3.0"
   }
