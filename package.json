@@ -11,7 +11,7 @@
     "front": "npm start --prefix front",
     "start": "concurrently \"npm run server\" \"npm run front\""
   },
-  "author": "Arpit",
+  "author": "Arpit, Gaurav",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
