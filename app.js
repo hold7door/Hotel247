@@ -99,7 +99,15 @@ app.use("/api", hotelData);
 app.use("/roominfo", roomInfo);
 app.use("/service", serviceOp);
 
-const port = 4500;
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("front/build")); //todo front /client
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "front", "build", "index.html")); //todo front /client
+  });
+}
+
+const port = process.env.PORT || 4500; //in app.listen
+
 var server = app.listen(port);
 console.log(`API Server listening on port ${port}`);
 
@@ -121,22 +129,18 @@ io.on("connection", function (sock) {
     );
   });
   sock.on("sendToManager", function (data) {
-    io.sockets
-      .in(data.hotelId)
-      .emit("sendGuestQuery", {
-        message: data.message,
-        from: data.roomNum,
-        room: data.roomNum,
-      });
+    io.sockets.in(data.hotelId).emit("sendGuestQuery", {
+      message: data.message,
+      from: data.roomNum,
+      room: data.roomNum,
+    });
   });
   sock.on("managerSendsReply", function (data) {
     console.log("Manager sends reply to " + data.to);
-    io.sockets
-      .in(data.to)
-      .emit("receive", {
-        message: data.message,
-        from: data.from,
-        room: data.room,
-      });
+    io.sockets.in(data.to).emit("receive", {
+      message: data.message,
+      from: data.from,
+      room: data.room,
+    });
   });
 });
