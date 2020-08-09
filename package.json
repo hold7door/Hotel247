@@ -1,16 +1,29 @@
 {
-  "name": "Hotel247",
+  "name": "hotel247",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Automated billing and ordering",
+  "main": "app.js",
   "scripts": {
-    "start": "concurrently \"cd hotel247 && node app.js\" \"cd front && npm start\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "node app.js",
+    "front": "npm start --prefix front",
+    "start": "concurrently \"npm run server\" \"npm run front\""
   },
-  "keywords": [],
-  "author": "",
+  "author": "Arpit",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^5.0.0"
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "connect-mongodb": "^1.1.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.9.20",
+    "mongoose-express-session": "0.0.5",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "socket.io": "^2.3.0"
   }
 }
