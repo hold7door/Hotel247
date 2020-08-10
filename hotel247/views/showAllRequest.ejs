@@ -13,13 +13,17 @@
         <h1>All Requests</h1>
         <div id="todo-table">
             <form>
+            <div>
                 <input type="text" name="item" placeholder="Add new item" required />
                 <button type="submit">Approve Id</button>
+            </div>
+            <div style="padding: 50px;margin: 10px">
                 <ul>
                     <% for (var i=0; i<data.length; i++) { %>
                         <li><%= data[i] %></li>
                     <% } %>
                 </ul>
+            </div>
             </form>
         </div>
     </body>
