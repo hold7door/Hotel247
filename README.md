@@ -1,4 +1,7 @@
-## HOTEL247
+
+## HOTEL247 
+## Live Demo
+https://hidden-eyrie-12460.herokuapp.com/
 
 ### How to get the project running on your system
 * Download the project using 
