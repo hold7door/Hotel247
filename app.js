@@ -1,9 +1,9 @@
 //Dotenv that loads environmental varibles from a .env file into process.env
 const dotenv = require("dotenv");
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-}
+const result = dotenv.config({ silent: true });
+// if (result.error) {
+//   throw result.error;
+// }
 const path = require("path"); //install path module
 //All required packages
 const express = require("express");
