@@ -26,6 +26,7 @@ import Support from "views/Support.jsx";
 import Services from "views/Services.jsx";
 import ViewServices from "views/ViewServices";
 import Rooms from 'views/Rooms';
+import Orders from 'views/Orders';
 
 var routes = [
   {
@@ -48,6 +49,13 @@ var routes = [
     icon: "nc-icon nc-tile-56",
     component: Rooms,
     layout: "/admin"
+  },
+  {
+    path : "/orders",
+    name : "Active Orders",
+    icon: "nc-icon nc-diamond",
+    component : Orders,
+    layout : "/admin"
   },
   {
     path : "/editservices",

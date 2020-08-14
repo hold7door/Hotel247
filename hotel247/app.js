@@ -100,7 +100,6 @@ const port = 4500;
 var server = app.listen(port);
 console.log(`API Server listening on port ${port}`);
 
-//Socket.io events for Chat
 var io = socket(server);
 io.on('connection', function(sock){
     console.log("Guest/Manager connected");
@@ -115,11 +114,25 @@ io.on('connection', function(sock){
         sock.join(guestRoom);
         console.log("Guest joined. Room : " + data.room + " HotelId : " + data.hotelId);
     });
+
+    //Socket.io events for Chat
     sock.on('sendToManager', function(data){
         io.sockets.in(data.hotelId).emit('sendGuestQuery', {message : data.message, from  : data.roomNum, room : data.roomNum});
     });
     sock.on('managerSendsReply', function(data){
         console.log("Manager sends reply to " + data.to);
         io.sockets.in(data.to).emit('receive', {message : data.message, from : data.from, room : data.room});
+    });
+
+    // Events for orders
+    sock.on('placeOrder', function(data){
+        io.sockets.in(data.hotelId).emit('sendOrder', {orderDetails : data, from : data.roomNum});
+    });
+    sock.on('approveOrder', function(data){
+        // console.log("yes");
+        io.sockets.in(data.to).emit('approve', {OrderId : data.OrderId});
+    });
+    sock.on('doneOrder', function(data){
+        io.sockets.in(data.hotelId).emit('delivered', {orderDetails : data});
     });
 });
