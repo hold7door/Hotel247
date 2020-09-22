@@ -1,24 +1,6 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
-import { Link, Redirect} from "react-router-dom";
-import axios from 'axios';
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 import {
   Collapse,
   Navbar,
@@ -34,7 +16,7 @@ import {
   InputGroup,
   InputGroupText,
   InputGroupAddon,
-  Input
+  Input,
 } from "reactstrap";
 
 import routes from "routes.js";
@@ -55,20 +37,20 @@ class Header extends React.Component {
   toggle() {
     if (this.state.isOpen) {
       this.setState({
-        color: "transparent"
+        color: "transparent",
       });
     } else {
       this.setState({
-        color: "dark"
+        color: "dark",
       });
     }
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   }
   dropdownToggle(e) {
     this.setState({
-      dropdownOpen: !this.state.dropdownOpen
+      dropdownOpen: !this.state.dropdownOpen,
     });
   }
   getBrand() {
@@ -89,29 +71,30 @@ class Header extends React.Component {
   updateColor() {
     if (window.innerWidth < 993 && this.state.isOpen) {
       this.setState({
-        color: "dark"
+        color: "dark",
       });
     } else {
       this.setState({
-        color: "transparent"
+        color: "transparent",
       });
     }
   }
-  logout(){
+  logout() {
     axios({
-      method : 'get',
-      url : '/logout',
-      responseType : 'json'
-    }).then((response)=>{
-     // console.log(response.data);
-      if (response.status === 200 && response.data.loggedOut === true){
-        console.log("logged out");
-        this.props.logoutRedirectFunction();
-
-      }
-    }).catch((err)=>{
-      console.log(err);
-    });
+      method: "get",
+      url: "/logout",
+      responseType: "json",
+    })
+      .then((response) => {
+        // console.log(response.data);
+        if (response.status === 200 && response.data.loggedOut === true) {
+          console.log("logged out");
+          this.props.logoutRedirectFunction();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   componentDidMount() {
     window.addEventListener("resize", this.updateColor.bind(this));
@@ -127,95 +110,97 @@ class Header extends React.Component {
     }
   }
   render() {
-      return (
-        // add or remove classes depending if we are on full-screen-maps page or not
-        <Navbar
-          color={
-            this.props.location.pathname.indexOf("full-screen-maps") !== -1
-              ? "dark"
-              : this.state.color
-          }
-          expand="lg"
-          className={
-            this.props.location.pathname.indexOf("full-screen-maps") !== -1
-              ? "navbar-absolute fixed-top"
-              : "navbar-absolute fixed-top " +
-                (this.state.color === "transparent" ? "navbar-transparent " : "")
-          }
-        >
-          <Container fluid>
-            <div className="navbar-wrapper">
-              <div className="navbar-toggle">
-                <button
-                  type="button"
-                  ref={this.sidebarToggle}
-                  className="navbar-toggler"
-                  onClick={() => this.openSidebar()}
-                >
-                  <span className="navbar-toggler-bar bar1" />
-                  <span className="navbar-toggler-bar bar2" />
-                  <span className="navbar-toggler-bar bar3" />
-                </button>
-              </div>
-              <NavbarBrand href="/">{this.getBrand()}</NavbarBrand>
+    return (
+      // add or remove classes depending if we are on full-screen-maps page or not
+      <Navbar
+        color={
+          this.props.location.pathname.indexOf("full-screen-maps") !== -1
+            ? "dark"
+            : this.state.color
+        }
+        expand="lg"
+        className={
+          this.props.location.pathname.indexOf("full-screen-maps") !== -1
+            ? "navbar-absolute fixed-top"
+            : "navbar-absolute fixed-top " +
+              (this.state.color === "transparent" ? "navbar-transparent " : "")
+        }
+      >
+        <Container fluid>
+          <div className="navbar-wrapper">
+            <div className="navbar-toggle">
+              <button
+                type="button"
+                ref={this.sidebarToggle}
+                className="navbar-toggler"
+                onClick={() => this.openSidebar()}
+              >
+                <span className="navbar-toggler-bar bar1" />
+                <span className="navbar-toggler-bar bar2" />
+                <span className="navbar-toggler-bar bar3" />
+              </button>
             </div>
-            <NavbarToggler onClick={this.toggle}>
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-            </NavbarToggler>
-            <Collapse
-              isOpen={this.state.isOpen}
-              navbar
-              className="justify-content-end"
-            >
-              <form>
-                <InputGroup className="no-border">
-                  <Input placeholder="Search..." />
-                  <InputGroupAddon addonType="append">
-                    <InputGroupText>
-                      <i className="nc-icon nc-zoom-split" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
-              </form>
-              <Nav navbar>
-                <NavItem>
-                  <Link to="#pablo" className="nav-link btn-magnify">
-                    <i className="nc-icon nc-layout-11" />
-                    <p>
-                      <span className="d-lg-none d-md-block">Stats</span>
-                    </p>
-                  </Link>
-                </NavItem>
-                <NavItem>
-                  <Link to="#pablo" className="nav-link btn-rotate">
-                    <i className="nc-icon nc-bell-55" />
-                    <p>
-                      <span className="d-lg-none d-md-block">Account</span>
-                    </p>
-                  </Link>
-                </NavItem>
-                <Dropdown
-                  nav
-                  isOpen={this.state.dropdownOpen}
-                  toggle={e => this.dropdownToggle(e)}
-                >
-                  <DropdownToggle caret nav>
-                    <i className="nc-icon nc-settings-gear-65" />
-                    <p>
-                      <span className="d-lg-none d-md-block">Some Actions</span>
-                    </p>
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem as='button' onClick={this.logout}>Logout</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </Nav>
-            </Collapse>
-          </Container>
-        </Navbar>
-      );
+            <NavbarBrand href="/">{this.getBrand()}</NavbarBrand>
+          </div>
+          <NavbarToggler onClick={this.toggle}>
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+          </NavbarToggler>
+          <Collapse
+            isOpen={this.state.isOpen}
+            navbar
+            className="justify-content-end"
+          >
+            <form>
+              <InputGroup className="no-border">
+                <Input placeholder="Search..." />
+                <InputGroupAddon addonType="append">
+                  <InputGroupText>
+                    <i className="nc-icon nc-zoom-split" />
+                  </InputGroupText>
+                </InputGroupAddon>
+              </InputGroup>
+            </form>
+            <Nav navbar>
+              <NavItem>
+                <Link to="#pablo" className="nav-link btn-magnify">
+                  <i className="nc-icon nc-layout-11" />
+                  <p>
+                    <span className="d-lg-none d-md-block">Stats</span>
+                  </p>
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link to="#pablo" className="nav-link btn-rotate">
+                  <i className="nc-icon nc-bell-55" />
+                  <p>
+                    <span className="d-lg-none d-md-block">Account</span>
+                  </p>
+                </Link>
+              </NavItem>
+              <Dropdown
+                nav
+                isOpen={this.state.dropdownOpen}
+                toggle={(e) => this.dropdownToggle(e)}
+              >
+                <DropdownToggle caret nav>
+                  <i className="nc-icon nc-settings-gear-65" />
+                  <p>
+                    <span className="d-lg-none d-md-block">Some Actions</span>
+                  </p>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem as="button" onClick={this.logout}>
+                    Logout
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
+    );
   }
 }
 
